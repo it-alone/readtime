@@ -7,7 +7,10 @@ import tsconfigPaths from "vite-tsconfig-paths";
 //
 // 子路径部署(GitHub Pages 项目站点等):构建时传 BASE_PATH=/readtime/,
 // vite base 与 remix basename 同源;默认 "/" 对应根路径托管(本地预览/Vercel 等)。
-const BASE_PATH = process.env.BASE_PATH ?? "/";
+// 尾斜杠归一(与 scripts/patch-sw-assets.mjs 同规则):vite 对 "/readtime" 这类
+// 缺尾斜杠的 base 部分按纯拼接产 URL,会得到 /readtimeassets/ 断链。
+const RAW_BASE_PATH = process.env.BASE_PATH ?? "/";
+const BASE_PATH = RAW_BASE_PATH.endsWith("/") ? RAW_BASE_PATH : `${RAW_BASE_PATH}/`;
 
 export default defineConfig({
   base: BASE_PATH,
