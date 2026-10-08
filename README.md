@@ -2,6 +2,8 @@
 
 三年系统化英语学习计划(基础 · 进阶 · 高阶),Remix SPA 纯前端实现:SM-2 词汇间隔重复主线 + 语法/听力/阅读/发音四模块,学习数据只存本机 IndexedDB,PWA 离线可用。
 
+**在线体验(GitHub Pages):** https://it-alone.github.io/readtime/ —— 推送 `main` 自动构建发布(`.github/workflows/deploy.yml`,`BASE_PATH` 按仓库名子路径部署)。
+
 ## 需求背景(原始需求存档)
 
 制定本计划时的原始输入,存档如下:
