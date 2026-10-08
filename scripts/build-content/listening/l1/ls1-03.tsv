@@ -1,0 +1,16 @@
+# title	In the Classroom
+# topic	校园
+# summary	向同学借笔的小对话。
+# level	A1
+# type	dialogue
+# s	Hi, Anna. Do you have a pen?	嗨,安娜。你有笔吗?
+# s	Sorry, I only have one pen.	抱歉,我只有一支笔。
+# s	Ask Ben. He has two pens.	去问本吧,他有两支笔。
+# s	Ben, can I use your pen, please?	本,我可以用一下你的笔吗?
+# s	Sure! Here you are.	当然!给你。
+# s	Thank you very much.	非常感谢。
+# s	You're welcome. Give it back after class.	不客气。下课后还给我。
+What does the student need?	A book.|A pen.|A ruler.|A bag.	2	开头问 Do you have a pen?
+Who has two pens?	Anna.|Ben.|The teacher.|Nobody.	2	Anna 说 Ben has two pens。
+When will the student give it back?	Before class.|After class.|Tomorrow.|Today at noon.	2	Ben 说 Give it back after class。
+Does Anna lend her pen?	Yes, she does.|No, she has only one.|Yes, but later.|No, she is angry.	2	Anna 说自己只有一支笔,没借。

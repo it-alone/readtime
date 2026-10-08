@@ -1,0 +1,17 @@
+# title	Asking for Directions
+# topic	旅行
+# summary	游客问路的对话。
+# level	A1
+# type	dialogue
+# s	Excuse me, how can I get to the train station?	打扰一下,请问怎么去火车站?
+# s	Go straight and turn left at the bank.	直走,到银行后左转。
+# s	Is it far from here?	离这儿远吗?
+# s	No, about ten minutes on foot.	不远,步行大约十分钟。
+# s	Can I take a bus there?	我可以坐公交车去吗?
+# s	Yes, the No. 5 bus stops over there.	可以,5 路公交在那边停靠。
+# s	Thank you so much!	非常感谢!
+# s	You're welcome. Have a nice trip!	不客气。旅途愉快!
+Where does the visitor want to go?	To the bank.|To the train station.|To the park.|To the airport.	2	问的是怎么去火车站。
+Where should the visitor turn left?	At the park.|At the bank.|At the post office.|At the school.	2	到银行后左转。
+How long does it take on foot?	About five minutes.|About ten minutes.|About twenty minutes.|About an hour.	2	步行大约十分钟。
+Which bus goes there?	The No. 3 bus.|The No. 5 bus.|The No. 15 bus.|No bus.	2	5 路公交可以到。

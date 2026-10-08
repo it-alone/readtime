@@ -1,0 +1,18 @@
+# title	Talking about Hobbies
+# topic	社交
+# summary	两个朋友聊各自的爱好。
+# level	A2
+# type	dialogue
+# s	What do you do in your free time, Emma?	艾玛,你空闲时间做什么?
+# s	I play the guitar in a small band.	我在一个小乐队里弹吉他。
+# s	Really? How long have you played it?	真的吗?你弹多久了?
+# s	For about three years now.	到现在大约三年了。
+# s	That's cool! I prefer taking photos.	真酷!我更喜欢拍照。
+# s	What kind of photos do you take?	你拍什么样的照片?
+# s	Mostly streets and people in the evening light.	主要是傍晚光线下的街景和人物。
+# s	You should show me your photos sometime.	改天给我看看你的照片吧。
+# s	Sure, and maybe I can watch your band play.	好啊,也许我还能去看你们乐队演出。
+What is Emma's hobby?	Taking photos.|Playing the guitar.|Painting.|Singing.	2	艾玛在乐队里弹吉他。
+How long has Emma played it?	One year.|Two years.|Three years.|Four years.	3	大约三年了。
+What kind of photos does the other speaker take?	Animals and plants.|Streets and people in the evening light.|Mountains and rivers.|Sports games.	2	主要是傍晚光线下的街景和人物。
+What will they do in the future?	Nothing special.|Join a band together.|Show photos and watch the band play.|Take a photo class.	3	一个要看照片,一个要去看乐队演出。

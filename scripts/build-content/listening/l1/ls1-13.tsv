@@ -1,0 +1,17 @@
+# title	Buying a Birthday Gift
+# topic	购物
+# summary	为妈妈挑选生日礼物的对话。
+# level	A1
+# type	dialogue
+# s	Can I help you?	需要帮忙吗?
+# s	Yes, I want a gift for my mother.	是的,我想给妈妈买件礼物。
+# s	How about this blue bag?	这个蓝色的包怎么样?
+# s	Hmm, my mother likes red.	嗯,我妈妈喜欢红色。
+# s	Then look at this red scarf.	那看看这条红围巾吧。
+# s	It's beautiful! How much is it?	真漂亮!多少钱?
+# s	Fifteen dollars.	十五美元。
+# s	OK, I'll take it. She will love it.	好,我买了。她一定会喜欢。
+Who is the gift for?	The speaker's sister.|The speaker's mother.|The speaker's friend.|The speaker's teacher.	2	礼物是给妈妈的。
+What color does the mother like?	Blue.|Red.|Green.|Black.	2	妈妈喜欢红色。
+What does the speaker buy?	A blue bag.|A red scarf.|A red bag.|A blue scarf.	2	买了红围巾。
+How much is the gift?	Five dollars.|Ten dollars.|Fifteen dollars.|Fifty dollars.	3	十五美元。

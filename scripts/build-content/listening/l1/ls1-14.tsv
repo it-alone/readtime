@@ -1,0 +1,17 @@
+# title	The Weather Today
+# topic	天气
+# summary	出门前关于下雨带伞的对话。
+# level	A1
+# type	dialogue
+# s	Mum, I'm going to school now.	妈妈,我现在去上学了。
+# s	Wait! Look at the sky. It's cloudy.	等等!看看天,阴沉沉的。
+# s	Is it going to rain?	要下雨了吗?
+# s	Yes, the radio says it will rain this morning.	是的,广播说今天上午会下雨。
+# s	Then I'll take my umbrella.	那我带上伞。
+# s	Good boy. Put on your raincoat, too.	好孩子。把雨衣也穿上。
+# s	OK, Mum. Bye!	好的,妈妈。再见!
+# s	Take care! Don't run in the rain.	小心点!别在雨里跑。
+Where is the boy going?	To the park.|To school.|To the shop.|To the library.	2	他现在要去上学。
+What does the radio say?	It will snow.|It will be sunny.|It will rain this morning.|It will be windy.	3	广播说今天上午会下雨。
+What will the boy take?	A raincoat only.|An umbrella only.|Both an umbrella and a raincoat.|Nothing.	3	他带上伞,妈妈又让他穿雨衣。
+What does Mum tell him not to do?	Not to be late.|Not to run in the rain.|Not to play outside.|Not to forget lunch.	2	妈妈叮嘱别在雨里跑。

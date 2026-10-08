@@ -1,0 +1,18 @@
+# title	Visiting the Library
+# topic	校园
+# summary	新生办理借书证的对话。
+# level	A2
+# type	dialogue
+# s	Good morning. I want to borrow some books.	早上好。我想借几本书。
+# s	Do you have a library card?	您有借书证吗?
+# s	No, I'm a new student here.	没有,我是新来的学生。
+# s	No problem. Fill in this form with your name and class.	没问题。请在表格里填上姓名和班级。
+# s	Done. How many books can I borrow at one time?	填好了。我一次能借几本书?
+# s	Up to five books for two weeks.	最多五本,借期两周。
+# s	What happens if a book is late?	如果书逾期了会怎么样?
+# s	You pay ten cents a day for each late book.	每本书每天逾期费十美分。
+# s	I see. Thank you for your help.	明白了。谢谢您的帮助。
+Why doesn't the student have a library card?	He lost it.|He is a new student.|He forgot it at home.|The card is broken.	2	他是一名新学生。
+What does the student write on the form?	Name and phone.|Name and class.|Address and age.|Class and hobbies.	2	填姓名和班级。
+How long can a student keep the books?	One week.|Two weeks.|Three weeks.|One month.	2	借期两周。
+How much is the late fee for one book per day?	One cent.|Five cents.|Ten cents.|One dollar.	3	每本书每天十美分。

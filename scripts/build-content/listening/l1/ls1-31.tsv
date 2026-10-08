@@ -1,0 +1,18 @@
+# title	Planning a Birthday Party
+# topic	社交
+# summary	为朋友筹备生日派对的对话。
+# level	A2
+# type	dialogue
+# s	Kate's birthday is next Friday.	凯特的生日是下周五。
+# s	Right! Shall we have a party for her?	对!我们给她办个派对怎么样?
+# s	Good idea. Where should we have it?	好主意。在哪儿办?
+# s	My parents' garden is big enough.	我父母的花园够大。
+# s	Perfect. I'll make a chocolate cake.	太好了。我来做巧克力蛋糕。
+# s	I can bring some juice and fruit.	我可以带果汁和水果。
+# s	Let's invite the whole class.	我们把全班都请来吧。
+# s	Maybe just fifteen people, or it'll be too noisy.	还是十五个人左右吧,不然太吵了。
+# s	OK. Don't forget to keep it a secret from Kate.	好。别忘了对凯特保密。
+When is Kate's birthday?	This Friday.|Next Friday.|Next Saturday.|Tomorrow.	2	下周五。
+Where will the party be?	In a restaurant.|In the classroom.|In a garden.|At a park.	3	在其中一人家里的花园。
+What will the second speaker make?	A chocolate cake.|Juice and fruit.|Birthday cards.|Cookies.	1	对方来做巧克力蛋糕。
+Why not invite the whole class?	The garden is too small.|It would be too noisy.|Kate doesn't like big parties.|They have no time.	2	不然太吵了。

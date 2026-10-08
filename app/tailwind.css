@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 全局基底(设计系统见 ARCHITECTURE.md §4.3):字体渲染、选中色、滚动条、点击高亮 */
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "tnum" off;
+  }
+
+  ::selection {
+    background-color: rgb(16 185 129 / 0.25);
+  }
+
+  /* 数字进度/统计统一等宽数字,避免跳动 */
+  .tabular-nums,
+  input,
+  select {
+    font-variant-numeric: tabular-nums;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background-color: rgb(148 163 184 / 0.4);
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

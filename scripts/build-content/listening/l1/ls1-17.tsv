@@ -1,0 +1,18 @@
+# title	A New Classmate
+# topic	校园
+# summary	欢迎新同学并互相认识的对话。
+# level	A2
+# type	dialogue
+# s	Hi, are you new in our class?	嗨,你是我们班新来的吗?
+# s	Yes, I am. My name is David.	是的。我叫戴维。
+# s	Welcome, David! I'm Lucy. Where are you from?	欢迎你,戴维!我是露西。你从哪儿来?
+# s	I'm from Canada, but my parents work in London now.	我来自加拿大,但我父母现在在伦敦工作。
+# s	Cool! How do you like our school?	真棒!你觉得我们学校怎么样?
+# s	It's big and the teachers are friendly.	学校很大,老师们也很友好。
+# s	What subject do you like best?	你最喜欢哪门课?
+# s	I love science, especially the experiments.	我喜欢科学,尤其是做实验。
+# s	Me too! Let's go to the science lab together sometime.	我也是!找时间我们一起去科学实验室吧。
+Where is David from?	The UK.|Canada.|Australia.|America.	2	他说 I'm from Canada。
+Why does David live in London now?	He studies there.|His parents work there.|He was born there.|His school is there.	2	因为父母在伦敦工作。
+What does David think of the school?	Small but nice.|Big with friendly teachers.|Old and boring.|Too far away.	2	学校很大,老师友好。
+Which subject do they both like?	Math.|History.|Science.|English.	3	两人都喜欢科学。

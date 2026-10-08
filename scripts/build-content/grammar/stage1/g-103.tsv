@@ -1,0 +1,13 @@
+# title	名词单复数
+# summary	英语名词有单复数之分,复数形式的规则变化与常见不规则变化都要熟记。
+# level	A1
+# points	一般情况加 -s:book → books|以 s / x / ch / sh 结尾加 -es:box → boxes|辅音字母 + y 结尾:变 y 为 i 加 -es:city → cities|不规则变化:man → men,child → children,tooth → teeth
+# example	I have two boxes.	我有两个箱子。
+# example	There are many children in the park.	公园里有很多孩子。
+# example	These cities are very big.	这些城市非常大。
+two ___ (box)	boxs|boxes|box|boxis	2	以 x 结尾加 -es。
+three ___ (child)	childs|childes|children|childrens	3	child 是不规则变化。
+many ___ (city)	citys|cities|cityes|city	2	辅音字母 + y,变 y 为 i 加 -es。
+five ___ (apple)	apple|apples|applees|applis	2	一般情况直接加 -s。
+several ___ (man)	mans|men|manes|mens	2	man → men 是不规则变化。
+ten ___ (watch)	watchs|watch|watches|watchis	3	以 ch 结尾加 -es。

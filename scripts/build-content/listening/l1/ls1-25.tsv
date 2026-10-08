@@ -1,0 +1,18 @@
+# title	Ordering Pizza on the Phone
+# topic	饮食
+# summary	打电话订外卖披萨的对话。
+# level	A2
+# type	dialogue
+# s	Hello, Pizza House. What can I do for you?	您好,披萨屋。有什么可以为您服务?
+# s	I'd like a large cheese pizza, please.	我要一个大份芝士披萨。
+# s	Anything else? We have a special on chicken wings today.	还要别的吗?今天鸡翅有特价。
+# s	OK, add six chicken wings then.	那再加六个鸡翅。
+# s	Would you like any drinks?	要饮料吗?
+# s	One bottle of orange juice, please.	请来一瓶橙汁。
+# s	Your total is twenty-two dollars.	一共二十二美元。
+# s	How long will the delivery take?	外送大概要多久?
+# s	About thirty minutes. May I have your address?	大约三十分钟。请告诉我您的地址。
+What pizza does the customer order?	A small cheese pizza.|A large cheese pizza.|A large chicken pizza.|A medium cheese pizza.	2	大份芝士披萨。
+Why does the customer add chicken wings?	They are free.|They are on special today.|The waiter is kind.|He is very hungry.	2	因为今天鸡翅有特价。
+How much is the total?	Twelve dollars.|Twenty dollars.|Twenty-two dollars.|Thirty-two dollars.	3	一共二十二美元。
+How long will the delivery take?	About ten minutes.|About twenty minutes.|About thirty minutes.|About an hour.	3	大约三十分钟。

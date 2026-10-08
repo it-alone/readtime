@@ -1,0 +1,18 @@
+# title	At the Gym
+# topic	健康
+# summary	第一次去健身房办卡的对话。
+# level	A2
+# type	dialogue
+# s	Welcome to Fit Gym! Is this your first time here?	欢迎来到 Fit 健身房!您是第一次来吗?
+# s	Yes, I want to get healthier.	是的,我想变得更健康。
+# s	Great. We have a monthly card for thirty dollars.	很好。我们有月卡,三十美元。
+# s	What does it include?	月卡包含什么?
+# s	All the machines and two group classes.	所有器械和两节团体课。
+# s	What classes do you have?	你们有什么课?
+# s	Yoga on Monday and swimming on Thursday.	周一瑜伽,周四游泳。
+# s	Swimming sounds good. I'll take the monthly card.	游泳不错。我要办月卡。
+# s	Please fill in this form and show your ID.	请填这张表,并出示您的身份证。
+Why does the customer come to the gym?	To meet friends.|To get healthier.|To find a job.|To learn swimming only.	2	顾客说想变得更健康。
+How much is the monthly card?	Thirteen dollars.|Thirty dollars.|Three dollars.|Thirty-three dollars.	2	月卡三十美元。
+What classes does the gym offer?	Yoga and running.|Swimming and boxing.|Yoga and swimming.|Dancing and yoga.	3	周一瑜伽,周四游泳。
+What should the customer show?	A photo.|A health report.|An ID card.|A student card.	3	出示身份证。

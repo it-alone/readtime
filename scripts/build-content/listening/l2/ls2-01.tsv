@@ -1,0 +1,18 @@
+# title	A Job Interview
+# topic	职场
+# summary	应届毕业生参加市场营销岗位面试。
+# level	B1
+# type	dialogue
+# s	Good morning, Ms Lee. Please take a seat.	早上好,李女士。请坐。
+# s	Thank you for inviting me to this interview.	感谢您给我这次面试机会。
+# s	Could you tell me a little about your studies?	能简单介绍一下你的学业情况吗?
+# s	I graduated from Green University with a degree in marketing.	我毕业于格林大学市场营销专业。
+# s	I also completed an internship at an advertising company.	我还在一家广告公司完成了实习。
+# s	What did you do there exactly?	你在那儿具体做什么?
+# s	I helped design online ads and wrote posts for social media.	我帮助设计线上广告,并为社交媒体撰写文案。
+# s	Our team's campaign increased sales by fifteen percent.	我们团队的推广活动让销量提升了百分之十五。
+# s	Impressive. When can you start working here?	令人印象深刻。你什么时候可以入职?
+What position is the interview for?	A designer.|A marketing job.|A teacher.|A sales manager.	2	市场营销专业毕业,面试营销岗位。
+Where did the applicant do the internship?	At a university.|At an advertising company.|At a newspaper.|At a radio station.	2	在一家广告公司实习。
+What did the applicant do during the internship?	Sold products by phone.|Designed online ads and wrote social media posts.|Organised events.|Made market reports.	2	设计线上广告、写社交媒体文案。
+How much did sales increase in the campaign?	Five percent.|Ten percent.|Fifteen percent.|Fifty percent.	3	提升了百分之十五。

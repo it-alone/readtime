@@ -1,0 +1,17 @@
+# title	Weekend Plans
+# topic	社交
+# summary	商量周末去公园的对话。
+# level	A1
+# type	dialogue
+# s	What are you going to do this weekend?	这个周末你打算做什么?
+# s	Nothing special. Why?	没什么特别的。怎么了?
+# s	Let's go to the park on Saturday.	我们周六去公园吧。
+# s	Good idea! What can we do there?	好主意!在那儿能做什么?
+# s	We can have a picnic and ride boats.	我们可以野餐,还可以划船。
+# s	Sounds fun! What's the weather like?	听起来很有趣!天气怎么样?
+# s	The radio says it will be sunny.	广播说会是晴天。
+# s	Great! See you at nine on Saturday.	太好了!周六九点见。
+When will they go to the park?	On Friday.|On Saturday.|On Sunday.|Next week.	2	约的是周六。
+What can they do in the park?	Swim and fish.|Have a picnic and ride boats.|Play tennis.|Watch a film.	2	可以野餐和划船。
+What will the weather be like?	Rainy.|Windy.|Sunny.|Snowy.	3	广播说是晴天。
+What time will they meet?	At eight.|At nine.|At ten.|At seven.	2	周六九点见。

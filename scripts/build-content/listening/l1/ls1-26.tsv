@@ -1,0 +1,17 @@
+# title	Talking about Exams
+# topic	校园
+# summary	两个学生聊数学考试的压力。
+# level	A2
+# type	dialogue
+# s	You look tired, Mike. What's wrong?	迈克,你看起来很累。怎么了?
+# s	I studied for the math exam until midnight.	我为数学考试复习到半夜。
+# s	Was the exam difficult?	考试难吗?
+# s	Yes, the last two questions were really hard.	难,最后两道题特别难。
+# s	Don't worry too much. You always do well in math.	别太担心,你数学一直很好。
+# s	I hope so. My parents expect high marks.	希望如此。我父母期望我拿高分。
+# s	You should relax after the exam.	考完试你该放松放松。
+# s	You're right. Let's play football this afternoon.	你说得对。今天下午我们去踢足球吧。
+Why does Mike look tired?	He was ill.|He studied until midnight.|He played games late.|He watched a film.	2	复习到半夜。
+Which part of the exam was hard?	The first question.|The last two questions.|The whole exam.|The reading part.	2	最后两道题特别难。
+Who expects Mike to get high marks?	His teacher.|His friends.|His parents.|His coach.	3	父母期望他拿高分。
+What will they do this afternoon?	Study math.|Watch a game.|Play football.|Go swimming.	3	下午去踢足球。

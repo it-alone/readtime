@@ -1,0 +1,17 @@
+# title	Discussing a Group Project
+# topic	校园
+# summary	三位同学分工准备小组课题的讨论。
+# level	B1
+# type	dialogue
+# s	Our presentation is due next Thursday, right?	我们的展示下周四截止,对吧?
+# s	Yes, and we haven't even chosen a topic yet.	对,可我们连题目都还没定。
+# s	How about renewable energy? It matches our course.	可再生能源怎么样?和我们课程很搭。
+# s	Good idea. I'll search for recent reports this weekend.	好主意。周末我去查最新的报告。
+# s	I can prepare the slides once we have the materials.	材料齐了以后我可以做幻灯片。
+# s	Then I'll practise the speaking part with you two.	那我就和你们俩一起练讲的部分。
+# s	Shall we meet on Monday afternoon in the library?	周一下午图书馆碰头可以吗?
+# s	Fine by me. Let's book a study room online now.	我没问题。现在就在线上订个研讨室吧。
+When is the presentation due?	This Thursday.|Next Thursday.|Next Monday.|In two weeks.	2	下周四截止。
+What topic do they finally choose?	Social media.|Renewable energy.|Ancient history.|City traffic.	2	选了可再生能源。
+Who will search for recent reports?	The first speaker.|The second speaker.|The third speaker.|The teacher.	1	第二个人说周末去查报告。
+Where will they meet on Monday?	In the classroom.|In the library.|At a café.|At home.	2	周一在图书馆碰头。

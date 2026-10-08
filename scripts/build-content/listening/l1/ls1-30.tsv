@@ -1,0 +1,18 @@
+# title	A Cold and the Pharmacy
+# topic	健康
+# summary	在药店描述感冒症状买药的对话。
+# level	A2
+# type	dialogue
+# s	Good afternoon. How are you feeling?	下午好。您感觉怎么样?
+# s	I have a bad cold and a runny nose.	我得了重感冒,一直流鼻涕。
+# s	Do you have a fever?	发烧吗?
+# s	A little, about thirty-eight degrees last night.	有一点,昨晚大约三十八度。
+# s	Any cough or sore throat?	咳嗽或嗓子疼吗?
+# s	A slight cough, but my throat is fine.	轻微咳嗽,但嗓子没事。
+# s	I'll give you these cold pills and vitamin C.	我给您拿这种感冒药和维生素C。
+# s	Take the pills twice a day after meals.	这药一天两次,饭后服用。
+# s	Drink more water and rest well.	多喝水,好好休息。
+What's wrong with the customer?	A backache.|A bad cold.|A toothache.|A stomachache.	2	重感冒,流鼻涕。
+What was the customer's temperature last night?	Thirty-six degrees.|Thirty-seven degrees.|Thirty-eight degrees.|Thirty-nine degrees.	3	大约三十八度。
+Which symptom does the customer NOT have?	A runny nose.|A fever.|A cough.|A sore throat.	4	他说嗓子没事。
+How often should the customer take the pills?	Once a day.|Twice a day.|Three times a day.|Every four hours.	2	一天两次,饭后服用。

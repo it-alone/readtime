@@ -1,0 +1,16 @@
+# title	My Dog Coco
+# topic	动物
+# summary	介绍宠物狗 Coco 的一天。
+# level	A1
+# type	monologue
+# s	I have a dog. Her name is Coco.	我有一只狗,她叫 Coco。
+# s	She is small and white.	她小小的,白白的。
+# s	Every morning, she wakes up at six.	每天早上她六点醒来。
+# s	I walk her in the park after breakfast.	早饭后我带她去公园散步。
+# s	She likes to run and play with balls.	她喜欢跑来跑去,喜欢玩球。
+# s	In the afternoon, she sleeps under my desk.	下午她睡在我的桌子下面。
+# s	She is my best friend.	她是我最好的朋友。
+What color is Coco?	Black.|White.|Brown.|Yellow.	2	She is small and white。
+When does Coco wake up?	At five.|At six.|At seven.|At eight.	2	她早上六点醒来。
+Where does the speaker walk Coco?	In the street.|In the park.|In the garden.|At school.	2	早饭后带她去公园散步。
+What does Coco do in the afternoon?	She plays with balls.|She runs in the park.|She sleeps under the desk.|She eats a lot.	3	下午她睡在桌子下面。

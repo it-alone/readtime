@@ -1,0 +1,16 @@
+# title	What Time Is It?
+# topic	日常
+# summary	问时间并确认公交车的对话。
+# level	A1
+# type	dialogue
+# s	Excuse me, what time is it now?	打扰一下,现在几点了?
+# s	It's half past seven.	现在七点半。
+# s	Oh no! The bus leaves at eight.	哦不!公交车八点发车。
+# s	Don't worry. We have thirty minutes.	别担心。我们还有三十分钟。
+# s	Is the bus station far from here?	公交站离这里远吗?
+# s	No, it's only five minutes on foot.	不远,步行只要五分钟。
+# s	Great! Let's walk fast.	太好了!我们走快点。
+What time is it now?	Seven o'clock.|Half past seven.|Eight o'clock.|Half past eight.	2	回答 It's half past seven。
+What time does the bus leave?	At seven.|At half past seven.|At eight.|At half past eight.	3	The bus leaves at eight。
+How far is the bus station?	Five minutes on foot.|Ten minutes on foot.|Five minutes by bike.|Thirty minutes on foot.	1	步行只要五分钟。
+How do they go to the station?	By bus.|By bike.|On foot.|By taxi.	3	Let's walk fast 说明是步行去。

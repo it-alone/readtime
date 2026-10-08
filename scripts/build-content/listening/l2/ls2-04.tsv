@@ -1,0 +1,18 @@
+# title	Customer Service: Internet Problem
+# topic	服务
+# summary	打电话给客服报修宽带的对话。
+# level	B1
+# type	dialogue
+# s	Customer service, good morning. How can I help you?	客服部,早上好。有什么可以帮您?
+# s	My Internet has been down since yesterday evening.	我家宽带从昨晚开始就断了。
+# s	I'm sorry to hear that. Have you tried restarting the router?	很抱歉。您试过重启路由器吗?
+# s	Yes, twice, but the light is still red.	试过两次了,但指示灯还是红的。
+# s	I see. Let me check your line... there's a fault in your area.	我看看。让我检查您的线路……您所在区域有故障。
+# s	Our engineers are already working on it.	我们的工程师已经在处理了。
+# s	When will it be fixed?	什么时候能修好?
+# s	Probably by six this evening at the latest.	最迟今晚六点之前。
+# s	We'll send you a message once it's done.	修好后我们会给您发短信。
+When did the customer's Internet stop working?	Yesterday morning.|Yesterday evening.|This morning.|Two days ago.	2	从昨晚开始断网。
+What did the customer try before calling?	Changing the router.|Restarting the router twice.|Calling a neighbour.|Nothing.	2	重启过两次路由器。
+What is the cause of the problem?	An old router.|Unpaid bills.|A fault in the area.|A broken computer.	3	所在区域线路故障。
+When will the problem probably be solved?	By noon.|By six this evening.|Tomorrow morning.|Next week.	2	最迟今晚六点。

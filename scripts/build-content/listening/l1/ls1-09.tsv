@@ -1,0 +1,18 @@
+# title	At the Restaurant
+# topic	饮食
+# summary	在餐厅点餐的对话。
+# level	A1
+# type	dialogue
+# s	Good evening! A table for two?	晚上好!两位吗?
+# s	Yes, by the window, please.	是的,请安排靠窗的位子。
+# s	Here are the menus.	这是菜单。
+# s	What would you like to eat?	您想吃点什么?
+# s	I'd like a chicken sandwich and a salad.	我想要一个鸡肉三明治和一份沙拉。
+# s	And for you, sir?	先生,您呢?
+# s	Fish and chips for me, please.	请给我炸鱼薯条。
+# s	Anything to drink?	要喝点什么吗?
+# s	Two orange juices, please.	请来两杯橙汁。
+How many people want to eat?	One.|Two.|Three.|Four.	2	A table for two,两位。
+Where do they sit?	Near the door.|By the window.|In the corner.|Outside.	2	by the window, please。
+What does the first person order?	Fish and chips.|A chicken sandwich and a salad.|Only a salad.|A beef burger.	2	点的是鸡肉三明治和沙拉。
+What do they drink?	Two colas.|Two cups of tea.|Two orange juices.|One juice and one water.	3	Two orange juices, please。

@@ -1,0 +1,17 @@
+# title	At the Coffee Shop
+# topic	服务
+# summary	顾客点一杯小杯咖啡的简短对话。
+# level	A1
+# type	dialogue
+# s	Good morning! What can I get you?	早上好!您要点什么?
+# s	Hi, a small coffee, please.	你好,请给我一杯小杯咖啡。
+# s	With milk or sugar?	要加牛奶还是糖?
+# s	With milk, no sugar.	加牛奶,不要糖。
+# s	Anything to eat?	要吃点什么吗?
+# s	No, thanks. Just the coffee.	不用了,谢谢。就一杯咖啡。
+# s	That's two dollars fifty.	一共两美元五十美分。
+# s	Here you are. Thank you!	给您。谢谢!
+What does the customer order?	A large coffee.|A small coffee.|Tea with milk.|Orange juice.	2	顾客说 a small coffee, please,点的是小杯咖啡。
+What does the customer want in the coffee?	Sugar only.|Milk and sugar.|Milk only.|Nothing.	3	回答是 With milk, no sugar,只加牛奶不加糖。
+How much is the coffee?	Two dollars.|Two dollars fifty.|Three dollars.|One dollar fifty.	2	店员说 That's two dollars fifty。
+Does the customer buy anything to eat?	Yes, a cake.|Yes, some bread.|No, only the coffee.|Yes, an egg.	3	顾客回答 No, thanks. Just the coffee.

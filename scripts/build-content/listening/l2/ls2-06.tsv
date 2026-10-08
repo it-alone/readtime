@@ -1,0 +1,18 @@
+# title	A City Tour Introduction
+# topic	旅行
+# summary	导游对一座古城的介绍独白。
+# level	B1
+# type	monologue
+# s	Good morning, everyone, and welcome to Old Town.	大家早上好,欢迎来到老城。
+# s	Our walk today takes about ninety minutes.	我们今天的步行游览大约九十分钟。
+# s	Old Town was built more than six hundred years ago.	老城建城已有六百多年历史。
+# s	The tower on your left is the oldest building here.	您左边的塔是这里最古老的建筑。
+# s	It was once used to watch for fires and enemies.	它曾被用来瞭望火灾和敌人。
+# s	Nowadays, it offers a wonderful view of the whole city.	如今在塔上可以俯瞰全城美景。
+# s	In fifteen minutes, we'll reach the famous craft market.	十五分钟后我们会到达著名的手工艺市场。
+# s	There you can watch artists making paper and glass.	在那里您可以观看艺人造纸和制作玻璃。
+# s	Please keep together and watch your steps on the stone roads.	请跟紧队伍,在石板路上注意脚下。
+How long does the walk take?	Sixty minutes.|Ninety minutes.|Two hours.|A whole morning.	2	大约九十分钟。
+How old is Old Town?	About six hundred years old.|About sixteen hundred years old.|About sixty years old.|About one hundred years old.	1	六百多年历史。
+What was the tower used for in the past?	Storing food.|Watching for fires and enemies.|Holding meetings.|Keeping prisoners.	2	瞭望火灾和敌人。
+What can visitors see at the craft market?	Paper and glass making.|Old coins.|Painting exhibitions.|Fashion shows.	1	观看造纸和玻璃制作。

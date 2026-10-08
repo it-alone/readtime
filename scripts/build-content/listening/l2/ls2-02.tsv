@@ -1,0 +1,18 @@
+# title	Renting an Apartment
+# topic	服务
+# summary	向中介咨询租房的对话。
+# level	B1
+# type	dialogue
+# s	I'm calling about the apartment on River Road.	我打电话是想咨询河滨路的那套公寓。
+# s	Yes, it's still available. It has two bedrooms.	是的,还没租出去。有两个卧室。
+# s	What's the rent per month?	月租金多少?
+# s	Eight hundred a month, not including electricity.	每月八百,不含电费。
+# s	Is it close to public transport?	离公共交通近吗?
+# s	The subway station is just five minutes away on foot.	地铁站步行只要五分钟。
+# s	Sounds convenient. Are pets allowed?	听起来很方便。可以养宠物吗?
+# s	I'm afraid small pets only, and you need to pay a deposit.	恐怕只允许小宠物,而且您需要付押金。
+# s	That's fine. Could I visit it tomorrow afternoon?	可以。我明天下午能去看看吗?
+How many bedrooms does the apartment have?	One.|Two.|Three.|Four.	2	两个卧室。
+How much is the monthly rent?	Eighty dollars.|Eight hundred dollars.|Eight thousand dollars.|Eighteen hundred dollars.	2	每月八百。
+What is NOT included in the rent?	Water.|Electricity.|Internet.|Heating.	2	不含电费。
+What do we know about pets?	No pets at all.|Only small pets with a deposit.|Any pets are welcome.|Pets are free.	2	只允许小宠物,且要付押金。

@@ -1,0 +1,17 @@
+# title	Shopping for Fruit
+# topic	购物
+# summary	在水果店买水果的对话。
+# level	A1
+# type	dialogue
+# s	These apples look nice.	这些苹果看起来不错。
+# s	Yes, they are fresh and sweet.	是的,又新鲜又甜。
+# s	How much are they?	多少钱?
+# s	Three dollars a kilo.	三美元一公斤。
+# s	OK, I'll take two kilos, please.	好的,请给我两公斤。
+# s	Anything else? Bananas are on sale today.	还要别的吗?今天香蕉打折。
+# s	No, thanks. That's all.	不用了,谢谢。就这些。
+# s	That's six dollars in total.	一共六美元。
+How much are the apples?	Two dollars a kilo.|Three dollars a kilo.|Four dollars a kilo.|Six dollars a kilo.	2	Three dollars a kilo,一公斤三美元。
+How many kilos does the customer buy?	One kilo.|Two kilos.|Three kilos.|Four kilos.	2	I'll take two kilos。
+Which fruit is on sale today?	Apples.|Bananas.|Oranges.|Grapes.	2	店员说 Bananas are on sale today。
+How much does the customer pay in total?	Three dollars.|Five dollars.|Six dollars.|Eight dollars.	3	两公斤×三美元=六美元。

@@ -1,0 +1,15 @@
+# title	长难句主干提取:嵌套从句拆解
+# summary	学会在多层嵌套从句里先找到主句谓语,再逐层剥离从句,读懂 B2 长难句的第一课。
+# level	B2
+# points	先找"主谓宾"主干,从句先用括号括起来|一个句子只有一个主句谓语,其余动词都在从句或非谓语里|定语从句紧跟先行词,名词性从句充当主/宾/表|剥掉修饰成分(介词短语、插入语)再看句意|读不懂时先问:谁?做了什么?
+# example	The idea that the committee proposed last week, which surprised everyone, was finally accepted.	委员会上周提出的那个想法——它让所有人都吃了一惊——最终被接受了。
+# example	What the report suggests is that we rewrite the budget before Friday.	报告的建议是我们在周五前重写预算。
+# example	The engineer who fixed the server that crashed twice won an award.	修好那台崩了两次的服务器的工程师获了奖。
+# example	Analysts believe that the strategy the company chose will fail.	分析师认为公司选定的策略会失败。
+# example	That she kept calm when the building shook was remarkable.	大楼摇晃时她还能保持镇定,令人赞叹。
+Which of the following is the main clause in "The fact that he lied, which we proved later, destroyed the trust"?	The fact destroyed the trust|he lied|we proved later|the fact that he lied	1	主干是 The fact ... destroyed the trust;两个从句只是修饰。
+In "What matters most is how we respond", the underlined parts "what matters most" and "how we respond" function as ___.	subject and predicative|object and adverbial|attribute and object|subject and object	1	what 从句作主语,how 从句作表语。
+Choose the correct analysis of "The woman who called you said she would email the contract that you signed".	两个定语从句 + 一个宾语从句|三个宾语从句|一个定语从句 + 一个宾语从句|没有从句,只有并列句	1	who called you 和 that you signed 是定语从句,she would email... 是宾语从句。
+"___ surprised us was the speed of the change."	What|That|Which|It	1	句子缺主语且强调"内容",用 what 引导主语从句。
+Strip the modifiers: "The plan, despite its flaws, that the board approved in March has worked."	The plan has worked.|The board approved in March.|Despite its flaws.|The plan that the board approved.	1	去掉插入语和定语从句,主干是 The plan has worked。
+The sentence "I think that the team who wins tonight will qualify" contains ___ clauses.	three|two|four|one	1	宾语从句 that the team... will qualify 内又嵌一个定语从句 who wins tonight,共三个谓语结构分属两层嵌套。

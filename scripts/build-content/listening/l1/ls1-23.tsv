@@ -1,0 +1,18 @@
+# title	Returning a Shirt
+# topic	购物
+# summary	在商店退换衬衫的对话。
+# level	A2
+# type	dialogue
+# s	Excuse me, I bought this shirt here yesterday.	打扰一下,我昨天在这儿买了这件衬衫。
+# s	What's the problem with it?	它有什么问题吗?
+# s	It's too small for me. Can I change it for a bigger one?	我穿太小了。能换件大一号的吗?
+# s	Of course. Do you have the receipt?	当然可以。您带收据了吗?
+# s	Yes, here it is.	带了,在这儿。
+# s	Thank you. What size do you need?	谢谢。您需要什么尺码?
+# s	Large, please. The medium is too tight.	大号。中号太紧了。
+# s	Here's a large one in the same colour.	这是同色的大号。
+# s	It fits well. Thanks a lot!	很合身。多谢!
+When did the customer buy the shirt?	Today.|Yesterday.|Last week.|Two days ago.	2	昨天买的。
+What's wrong with the shirt?	It's broken.|The colour is wrong.|It's too small.|It's too expensive.	3	太小了。
+What does the customer show to the assistant?	The shirt only.|A receipt.|A membership card.|An ID card.	2	出示了收据。
+What size does the customer take at last?	Small.|Medium.|Large.|Extra large.	3	最后换了大号。

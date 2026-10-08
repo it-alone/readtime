@@ -1,0 +1,17 @@
+# title	My Day at School
+# topic	校园
+# summary	介绍一天的课程安排。
+# level	A1
+# type	monologue
+# s	I go to school from Monday to Friday.	我周一到周五上学。
+# s	Classes start at eight in the morning.	早上八点开始上课。
+# s	We have English first, then math.	第一节是英语,然后是数学。
+# s	Math is difficult but interesting.	数学难但有趣。
+# s	At twelve, I have lunch with my friends.	十二点,我和朋友们一起吃午饭。
+# s	In the afternoon, we have art and music.	下午我们上美术课和音乐课。
+# s	School finishes at four.	四点放学。
+# s	After school, I play basketball for an hour.	放学后我打一小时篮球。
+What time do classes start?	At seven.|At eight.|At twelve.|At four.	2	Classes start at eight。
+Which subject comes first?	Math.|English.|Art.|Music.	2	先上英语再上数学。
+What does the speaker think of math?	Easy and fun.|Difficult but interesting.|Boring.|Too easy.	2	数学难但有趣。
+What does the speaker do after school?	Plays football.|Plays basketball.|Reads a book.|Watches TV.	2	放学后打一小时篮球。

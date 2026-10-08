@@ -1,0 +1,17 @@
+# title	My Room
+# topic	家居
+# summary	介绍自己的房间。
+# level	A1
+# type	monologue
+# s	This is my room.	这是我的房间。
+# s	It is small but clean.	它很小但很干净。
+# s	There is a bed near the window.	窗边有一张床。
+# s	Next to the bed, there is a small table.	床旁边有一张小桌子。
+# s	My computer is on the desk.	我的电脑在书桌上。
+# s	I do my homework there every evening.	我每天晚上在那儿写作业。
+# s	On the wall, there are photos of my friends.	墙上有我朋友们的照片。
+# s	I like my room very much.	我非常喜欢我的房间。
+How is the room?	Big and clean.|Small but clean.|Big but dirty.|Small and dirty.	2	房间小但干净。
+Where is the bed?	Near the door.|Near the window.|Next to the desk.|Behind the table.	2	床在窗边。
+What is on the desk?	A lamp.|A computer.|A photo.|A plant.	2	电脑在书桌上。
+What is on the wall?	Paintings.|Maps.|Photos of friends.|A clock.	3	墙上是朋友们的照片。

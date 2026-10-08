@@ -1,0 +1,17 @@
+# title	A Phone Call to the Doctor
+# topic	健康
+# summary	打电话给诊所预约看病的对话。
+# level	A1
+# type	dialogue
+# s	Hello, Green Street Clinic.	您好,绿街诊所。
+# s	Hello, I want to see a doctor today.	您好,我今天想看医生。
+# s	What's the problem?	您哪里不舒服?
+# s	I have a headache and a sore throat.	我头疼,嗓子也疼。
+# s	Can you come at ten o'clock?	您十点能来吗?
+# s	Yes, ten o'clock is fine.	可以,十点没问题。
+# s	Please bring your ID card.	请带上您的身份证。
+# s	OK, thank you. See you later.	好的,谢谢。一会儿见。
+Why does the caller phone the clinic?	To buy medicine.|To see a doctor.|To visit a friend.|To ask the way.	2	打电话是为了预约看医生。
+What is wrong with the caller?	A cold and a fever.|A headache and a sore throat.|A stomachache.|A toothache.	2	I have a headache and a sore throat。
+What time is the appointment?	At nine.|At ten.|At eleven.|At noon.	2	约在十点。
+What should the caller bring?	A book.|An ID card.|A photo.|Money only.	2	请带上身份证。

@@ -1,0 +1,17 @@
+# title	My Family Photo
+# topic	家庭
+# summary	看全家福照片,介绍家人。
+# level	A1
+# type	monologue
+# s	Look at this photo of my family.	看看这张我的全家福。
+# s	The tall man is my father.	那个高个子的男人是我爸爸。
+# s	He is a doctor and he works in a hospital.	他是医生,在医院工作。
+# s	The woman next to him is my mother.	他旁边的女人是我妈妈。
+# s	She teaches English at a school.	她在一所学校教英语。
+# s	The little boy is my brother, Tom.	那个小男孩是我弟弟汤姆。
+# s	He is seven years old and he likes football.	他七岁,喜欢足球。
+# s	I love my family very much.	我非常爱我的家人。
+What does the father do?	He is a teacher.|He is a doctor.|He is a driver.|He is a cook.	2	He is a doctor and he works in a hospital。
+Where does the mother work?	In a hospital.|In a shop.|At a school.|At home.	3	She teaches English at a school。
+How old is Tom?	Five.|Six.|Seven.|Eight.	3	He is seven years old。
+What does Tom like?	Basketball.|Football.|Swimming.|Reading.	2	他喜欢足球(football)。

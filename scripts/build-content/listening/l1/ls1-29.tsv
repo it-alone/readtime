@@ -1,0 +1,18 @@
+# title	At the Train Station
+# topic	交通
+# summary	在火车站买票改签的对话。
+# level	A2
+# type	dialogue
+# s	Good morning. Two tickets to Oxford, please.	早上好。两张去牛津的票。
+# s	Single or return?	单程还是往返?
+# s	Return, please. We're coming back on Sunday.	往返。我们周日回来。
+# s	That's forty pounds in total.	一共四十英镑。
+# s	Oh wait, when does the next train leave?	等等,下一班车什么时候发?
+# s	At ten fifteen, from Platform 3.	十点十五分,三号站台。
+# s	That's too early. Is there a later one?	太早了。有晚一点的吗?
+# s	Yes, at eleven forty, but you need to change at Reading.	有,十一点四十,但需要在雷丁换乘。
+# s	We'll take the ten fifteen then. Here's the money.	那我们坐十点十五的。给您钱。
+How many tickets does the customer buy?	One.|Two.|Three.|Four.	2	两张票。
+What kind of tickets does the customer want?	Single.|Return.|Monthly.|First class.	2	往返票。
+When does the next train leave?	At ten fifteen.|At eleven forty.|At ten forty.|At nine fifteen.	1	下一班十点十五发车。
+Why don't they take the eleven forty train?	It's too slow.|It needs a change at Reading.|It's fully booked.|It has no seats.	2	那班车需要在雷丁换乘。

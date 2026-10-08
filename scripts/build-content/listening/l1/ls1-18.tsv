@@ -1,0 +1,18 @@
+# title	Booking a Hotel Room
+# topic	旅行
+# summary	打电话预订酒店的对话。
+# level	A2
+# type	dialogue
+# s	Good afternoon, Sunshine Hotel. How can I help you?	下午好,阳光酒店。请问有什么可以帮您?
+# s	Hello, I'd like to book a room for next weekend.	您好,我想订下周末的房间。
+# s	Certainly. A single or a double room?	好的。单人间还是双人间?
+# s	A double room, please. How much is it per night?	双人间。每晚多少钱?
+# s	Ninety dollars, including breakfast.	九十美元,含早餐。
+# s	Is the hotel near the city centre?	酒店离市中心近吗?
+# s	Yes, it's a ten-minute walk from the train station.	近,从火车站步行十分钟。
+# s	Perfect, I'll take it for two nights.	太好了,我订两晚。
+# s	May I have your name, please?	请告诉我您的姓名好吗?
+What kind of room does the guest book?	A single room.|A double room.|A family room.|Two single rooms.	2	订的是双人间。
+How much is the room per night?	Nineteen dollars.|Ninety dollars.|Nine dollars.|Ninety-nine dollars.	2	每晚九十美元。
+What is included in the price?	Dinner.|Lunch.|Breakfast.|Nothing.	3	含早餐。
+How long will the guest stay?	One night.|Two nights.|Three nights.|A week.	2	订两晚。

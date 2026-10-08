@@ -1,0 +1,17 @@
+# title	Lost on the Bus
+# topic	交通
+# summary	坐错公交车的乘客与司机的对话。
+# level	A1
+# type	dialogue
+# s	Excuse me, does this bus go to Main Street?	打扰一下,这趟车去主街吗?
+# s	No, this is the No. 12 bus.	不去,这是 12 路车。
+# s	Oh no, I'm on the wrong bus!	哦不,我坐错车了!
+# s	Don't worry. Get off at the next stop.	别担心。在下一站下车。
+# s	Then take the No. 8 bus across the street.	然后到马路对面坐 8 路车。
+# s	How long does it take to get there?	到那儿要多久?
+# s	About twenty minutes.	大约二十分钟。
+# s	Thank you for your help!	谢谢您的帮助!
+Which bus is the visitor on now?	The No. 8 bus.|The No. 12 bus.|The No. 5 bus.|The No. 20 bus.	2	这是 12 路车。
+What should the visitor do at the next stop?	Stay on the bus.|Get off the bus.|Change to a train.|Walk home.	2	下一站下车。
+Which bus goes to Main Street?	The No. 12 bus.|The No. 8 bus.|The No. 5 bus.|The No. 2 bus.	2	马路对面坐 8 路车。
+Where is the right bus stop?	Next to the bank.|Across the street.|Behind the station.|In front of the park.	2	在马路对面。
