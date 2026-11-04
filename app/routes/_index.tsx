@@ -3,7 +3,7 @@ import { Card, ProgressBar } from "~/components/ui";
 import { getServices } from "~/lib/api/local";
 import { todayStr } from "~/lib/gamify/streak";
 import { earnedBadges } from "~/models/badges";
-import type { SessionType } from "~/models/types";
+import { VOCAB_POINTER_END, type SessionType } from "~/models/types";
 
 // 首页:今日任务台(打卡、连胜、任务入口,见 ARCHITECTURE.md §4.2)
 // 词汇是主线任务(渐变主卡 + 进度),语法/听力/阅读/发音按今日 modulesTouched 显示速通状态。
@@ -65,6 +65,8 @@ export async function clientLoader() {
   const newTargetToday = task.goal.newDone + task.goal.newTarget;
   // 待复习口径:已清 todayLog.reviewsDone + 仍到期 task 中复习项数(复习完成后 getDue 缩水,不能用 dueCount 差值)
   const reviewRemaining = task.items.filter((i) => i.kind === "review").length;
+  // 三年词库学尽后不再提供"继续学习"入口(点进去也无新词可发)
+  const vocabExhausted = progress.stage === 3 && progress.vocabPointer === VOCAB_POINTER_END;
   return {
     streak: progress.streak,
     xp: progress.xp,
@@ -76,6 +78,7 @@ export async function clientLoader() {
     reviewRemaining,
     remaining: task.items.length,
     modulesTouched: todayLog.modulesTouched,
+    vocabExhausted,
   };
 }
 clientLoader.hydrate = true;
@@ -224,9 +227,19 @@ export default function Index() {
                 开始今日学习({data.remaining} 题)
               </Link>
             ) : (
-              <p className="rounded-2xl bg-white/20 py-3 text-center font-bold backdrop-blur">
-                🎉 今日任务已完成,好好休息!
-              </p>
+              <div className="space-y-2">
+                <p className="rounded-2xl bg-white/20 py-3 text-center font-bold backdrop-blur">
+                  🎉 今日任务已完成,好好休息!
+                </p>
+                {data.vocabExhausted ? null : (
+                  <Link
+                    to="/learn/vocab?extra=1"
+                    className="block rounded-2xl bg-white py-2.5 text-center text-sm font-bold text-emerald-600 shadow-md transition active:scale-[0.97]"
+                  >
+                    意犹未尽?继续学一组新词 →
+                  </Link>
+                )}
+              </div>
             )}
           </div>
         </section>

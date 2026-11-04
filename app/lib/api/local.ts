@@ -69,7 +69,8 @@ export interface WeakWord {
 }
 
 export interface VocabService {
-  getTodayTask(now?: Date): Promise<VocabTask>;
+  /** extra=继续学习:日目标已达成时按日目标量再发一组新词(词库学尽则 items 为空) */
+  getTodayTask(now?: Date, opts?: { extra?: boolean }): Promise<VocabTask>;
   completeSession(results: ItemResult[], startedAt: Date, now?: Date): Promise<CompletionSummary>;
   learnedWordCount(): Promise<number>;
   distractorPool(count: number): Promise<VocabWord[]>;
@@ -245,7 +246,7 @@ function createLocalServices(): Services {
   const content: ContentRepository = new StaticContentRepository();
 
   const vocab: VocabService = {
-    async getTodayTask(now = new Date()) {
+    async getTodayTask(now = new Date(), opts?: { extra?: boolean }) {
       const [settings, progress, log, dueStates, recentSessions] = await Promise.all([
         settingsRepo.get(),
         progressRepo.get(),
@@ -269,6 +270,7 @@ function createLocalServices(): Services {
         dailyNewTarget: settings.dailyNewWords,
         newDoneToday: log.newWordsLearned,
         retentionRate: computeRetentionRate(recentSessions),
+        extra: opts?.extra,
       });
       // 阅读来源的复习项带上来源文章,卡片渲染"回原文"
       const stateById = new Map(dueStates.map((s) => [s.wordId, s]));

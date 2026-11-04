@@ -2,7 +2,7 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { Link, useRevalidator } from "@remix-run/react";
 import { Button, Card, ProgressBar } from "~/components/ui";
 import { useServices } from "~/context/providers";
-import { speak, wordAudioUrl } from "~/lib/speech";
+import { speak, exampleAudioUrl, wordAudioUrl } from "~/lib/speech";
 import type { CompletionSummary, ItemResult, VocabTask, VocabWord } from "~/models/types";
 import { QuizCard } from "./QuizCard";
 import { SessionSummary } from "./SessionSummary";
@@ -186,11 +186,23 @@ function FeedbackPanel({
           <span className="text-sm text-slate-400">{word.phonetic}</span>
         </div>
         <p className="font-medium text-slate-700">{word.meaning}</p>
-        {word.examples.map((ex) => (
-          <div key={ex.en} className="rounded-2xl bg-slate-50/80 p-3 text-sm ring-1 ring-slate-900/5">
-            <p className="text-slate-800">{ex.en}</p>
+        {/* 离线音频包只有首条例句({wordId}-ex.m4a,见 generate-audio.mjs),其余例句回退 TTS */}
+        {word.examples.map((ex, i) => (
+          <button
+            key={ex.en}
+            type="button"
+            onClick={() => speak(ex.en, 1, i === 0 ? exampleAudioUrl(word.id) : undefined)}
+            className="block w-full rounded-2xl bg-slate-50/80 p-3 text-left text-sm ring-1 ring-slate-900/5 transition hover:bg-emerald-50/70 hover:ring-emerald-100 active:scale-[0.99]"
+            title="点击播放例句发音"
+          >
+            <p className="flex items-center justify-between gap-2 text-slate-800">
+              <span>{ex.en}</span>
+              <span aria-hidden className="shrink-0 text-xs opacity-60">
+                🔊
+              </span>
+            </p>
             <p className="mt-1 text-slate-400">{ex.zh}</p>
-          </div>
+          </button>
         ))}
       </div>
 

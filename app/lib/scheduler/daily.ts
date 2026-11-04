@@ -13,6 +13,8 @@ export interface BuildTaskInput {
   newDoneToday: number;
   /** 近期复习留存率(0-1);<0.8 时自动减半新词量(PLAN.md 风险应对) */
   retentionRate?: number;
+  /** 继续学习:日目标已达成仍要多学,按日目标量再发一组新词(主动加练,不受留存率减半) */
+  extra?: boolean;
 }
 
 export interface BuiltTask {
@@ -26,6 +28,7 @@ export function buildVocabTask(input: BuildTaskInput): BuiltTask {
   if (input.retentionRate !== undefined && input.retentionRate < 0.8) {
     target = Math.ceil(target / 2);
   }
+  if (input.extra && target === 0) target = input.dailyNewTarget;
   const fresh = input.stageWords.slice(input.pointerIndex, input.pointerIndex + target);
   const newItems: TaskItem[] = fresh.map((word) => ({ word, kind: "new", quiz: quizFor(word, "new") }));
   const reviewItems: TaskItem[] = due.map((word) => ({ word, kind: "review", quiz: quizFor(word, "review") }));

@@ -83,6 +83,43 @@ describe("每日任务编排", () => {
     expect(task.goal.newTarget).toBe(5);
   });
 
+  it("继续学习:日目标已达成仍按日目标量从指针处发新词", () => {
+    const task = buildVocabTask({
+      dueWords: [],
+      stageWords: STAGE_WORDS,
+      pointerIndex: 10,
+      dailyNewTarget: 10,
+      newDoneToday: 10,
+      extra: true,
+    });
+    expect(task.items).toHaveLength(10);
+    expect(task.items.every((i) => i.kind === "new")).toBe(true);
+    expect(task.items[0].word.id).toBe("w-010");
+  });
+
+  it("继续学习:不加 extra 时日目标达成后不发新词(行为不变)", () => {
+    const task = buildVocabTask({
+      dueWords: [],
+      stageWords: STAGE_WORDS,
+      pointerIndex: 10,
+      dailyNewTarget: 10,
+      newDoneToday: 10,
+    });
+    expect(task.items).toHaveLength(0);
+  });
+
+  it("继续学习:词库学尽后不再发新词", () => {
+    const task = buildVocabTask({
+      dueWords: [],
+      stageWords: STAGE_WORDS,
+      pointerIndex: 30,
+      dailyNewTarget: 10,
+      newDoneToday: 10,
+      extra: true,
+    });
+    expect(task.items).toHaveLength(0);
+  });
+
   it("到期复习超过上限时截断为 40", () => {
     const dueWords = Array.from({ length: 60 }, (_, i) => mkWord(200 + i));
     const task = buildVocabTask({
