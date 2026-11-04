@@ -112,12 +112,12 @@ describe("词库内容契约", () => {
     expect(() => VocabWordSchema.array().parse(stage2)).not.toThrow();
   });
 
-  it("词量达到第一年目标(3000 词,支持全年每日新词)", () => {
-    expect(VocabWordSchema.array().parse(stage1).length).toBeGreaterThanOrEqual(3000);
+  it("词量达到第一年目标(10,000 词,词库扩容后一年一万)", () => {
+    expect(VocabWordSchema.array().parse(stage1).length).toBeGreaterThanOrEqual(10000);
   });
 
-  it("词量达到第二年目标(3000 词,进阶阶段全年供给)", () => {
-    expect(VocabWordSchema.array().parse(stage2).length).toBeGreaterThanOrEqual(3000);
+  it("词量达到第二年目标(10,000 词,进阶阶段全年供给)", () => {
+    expect(VocabWordSchema.array().parse(stage2).length).toBeGreaterThanOrEqual(10000);
   });
 
   it("id 与 term 均唯一,stage 与文件一致", () => {
@@ -146,9 +146,9 @@ describe("词库内容契约", () => {
     });
   });
 
-  it("stage3 分片通过 VocabWordSchema 校验且词量达到第三年目标(4000 词,6,000 → 10,000)", () => {
+  it("stage3 分片通过 VocabWordSchema 校验且词量达到第三年目标(10,000 词,20,000 → 30,000)", () => {
     const w3 = VocabWordSchema.array().parse(stage3);
-    expect(w3.length).toBeGreaterThanOrEqual(4000);
+    expect(w3.length).toBeGreaterThanOrEqual(10000);
   });
 
   it("stage3 id 与 term 唯一,stage 恒为 3,id 以 w-s3- 前缀连续编号", () => {

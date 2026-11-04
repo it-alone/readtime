@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""批量内容生成入口:语法 3×1120 课 / 阅读 l2 3200 篇(A1 800+A2 1200+B1 1200)+ l3 100 篇(B2)/ 听力 l1 1400 + l2 600。
+"""批量内容生成入口:语法 3×280 课 / 阅读 l2 6400 篇(A1 1600+A2 2400+B1 2400)+ l3 300 篇(B2)/ 听力 l1 2800 + l2 1400。
 
 用法:python3 main.py            # 全量补齐(append-only,跳过已存在 id)
      python3 main.py --dry-run  # 只打印计划不写文件(计数照走)
@@ -23,11 +23,11 @@ DRY = "--dry-run" in sys.argv
 LEVEL_RANK = {"A1": 1, "A2": 2, "B1": 3, "B2": 4}
 NEXT_LEVEL = {"A1": "A2", "A2": "B1", "B1": "B2", "B2": "B2"}
 
-GRAMMAR_PER_STAGE = 1120                            # 28 话题 × 40 课
-READING_NEW = {"A1": 800, "A2": 1200, "B1": 1200}   # l2 追加
-READING_L3_NEW = 100                                # B2 追加
-LISTENING_L1_NEW = 1400                             # A1/A2 各半
-LISTENING_L2_NEW = 600                              # B1
+GRAMMAR_PER_STAGE = 280                             # 每学年新增 28×10 课(扩容:词库 3 万后少量补)
+READING_NEW = {"A1": 1600, "A2": 2400, "B1": 2400}  # l2 追加(扩容:让 2 万新词大量进入正文)
+READING_L3_NEW = 300                                # B2 追加
+LISTENING_L1_NEW = 2800                             # A1/A2 各半
+LISTENING_L2_NEW = 1400                             # B1
 
 COUNTS = {"grammar": 0, "reading": 0, "listening": 0}
 
@@ -107,7 +107,8 @@ def pick_embeds(rng, tags, level, n):
     tries = 0
     while len(picks) < n and tries < n * 40:
         tries += 1
-        pool = topic_pool if topic_pool and rng.random() < 0.85 else general
+        # 主题词保语境连贯;全库同级池让扩充词(仅带考试来源标签)也大量进入正文
+        pool = topic_pool if topic_pool and rng.random() < 0.5 else general
         w = rng.choice(pool)
         if w["term"].lower() in seen:
             continue

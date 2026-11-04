@@ -16,7 +16,8 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-VOCAB_JSON = {s: ROOT / f"public/data/vocab/stage{s}.json" for s in (1, 2, 3)}
+# 词库已按 stage 分片(vocab/stageN/part-XX.json),不再有单文件 stageN.json
+VOCAB_DIRS = {s: ROOT / f"public/data/vocab/stage{s}" for s in (1, 2, 3)}
 TSV_ROOT = ROOT / "scripts/build-content"
 
 SLOT_RE = re.compile(r"\{(\w+)\}")
@@ -175,8 +176,8 @@ def load_vocab():
     if _vocab_words is None:
         words = []
         for s in (1, 2, 3):
-            data = json.loads(VOCAB_JSON[s].read_text(encoding="utf-8"))
-            words.extend(data)
+            for part in sorted(VOCAB_DIRS[s].glob("part-*.json")):
+                words.extend(json.loads(part.read_text(encoding="utf-8")))
         _vocab_words = words
     return _vocab_words
 

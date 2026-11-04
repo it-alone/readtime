@@ -334,7 +334,9 @@ async function buildVocab() {
     const words = [];
     for (const file of files) {
       const unit = file.replace(/\.tsv$/, "");
-      if (!/^u\d{2,3}$/.test(unit)) fail(`文件名 ${file} 应形如 u01.tsv(与 unit 字段一致)`);
+      // 扩充单元用 x001 起的三位编号:字典序恒在既有 u01..u99/u1xx 之后,
+      // 追加不改变既有词的拼接顺序(词 id = 位置,错序会破坏学员的 SM-2 数据)
+      if (!/^(u\d{2,3}|x\d{3})$/.test(unit)) fail(`文件名 ${file} 应形如 u01.tsv(与 unit 字段一致)`);
       const text = await readFile(join(spec.dir, file), "utf-8");
       const rows = text
         .split("\n")

@@ -133,7 +133,7 @@ export default function Index() {
           <Card className="space-y-3 border-emerald-100 bg-gradient-to-br from-emerald-50/80 to-teal-50/50">
             <h2 className="font-bold">👋 欢迎开始三年英语之旅</h2>
             <p className="text-sm leading-relaxed text-slate-600">
-              第 1 年基础阶段:高频词汇 + 核心语法 + 标准发音。每天 45 分钟,一年掌握 3000 词、CEFR A2。
+              第 1 年基础阶段:高频词汇 + 核心语法 + 标准发音。每天 45 分钟,一年词库 10,000 词、CEFR A2。
             </p>
             <ol className="space-y-2 text-sm">
               <li className="flex items-start gap-2.5">

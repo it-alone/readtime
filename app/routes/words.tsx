@@ -5,7 +5,7 @@ import { getServices } from "~/lib/api/local";
 import { exampleAudioUrl, speak, stop, wordAudioUrl } from "~/lib/speech";
 import type { CEFR, Stage, VocabWord } from "~/models/types";
 
-// 词库浏览:三年 10,000 词的全量只读视图(按 stage → unit 分组折叠,支持搜索与级别筛选)。
+// 词库浏览:三年 30,000 词的全量只读视图(每年 10,000,按 stage → unit 分组折叠,支持搜索与级别筛选)。
 // 不写任何学习数据;词表按 stage 懒加载(manifest + ≤500KB 分片),内存缓存避免重复拉取。
 
 export async function clientLoader() {
@@ -103,6 +103,17 @@ export default function WordsBrowser() {
     return [...byUnit.entries()].sort(([a], [b]) => a.localeCompare(b));
   }, [filtered]);
 
+  // 单元序号:按词库文件顺序(JSON 词序)给当前学年单元编号。
+  // 扩充单元文件名是 x001 起(字典序保证追加不挪动旧词 id),展示时统一转成连续序号
+  const unitNo = useMemo(() => {
+    const order = new Map<string, number>();
+    for (const w of words ?? []) {
+      if (!order.has(w.unit)) order.set(w.unit, order.size + 1);
+    }
+    return order;
+  }, [words]);
+  const unitLabel = (unit: string) => String(unitNo.get(unit) ?? "").padStart(2, "0");
+
   const searching = q.length > 0;
   const searchHits = searching ? filtered.slice(0, SEARCH_CAP) : [];
 
@@ -118,7 +129,7 @@ export default function WordsBrowser() {
   return (
     <PageShell title="词库浏览" back="/">
       <p className="text-xs leading-relaxed text-slate-400">
-        三年全部 10,000 词(3,000 / 3,000 / 4,000),按单元浏览,支持搜索、级别筛选与发音试听。
+        三年全部 30,000 词(每年 10,000),按单元浏览,支持搜索、级别筛选与发音试听。
       </p>
 
       {/* 年份切换:分段控制器 */}
@@ -191,7 +202,7 @@ export default function WordsBrowser() {
           </p>
           <div className="space-y-1.5">
             {searchHits.map((w) => (
-              <WordRow key={w.id} word={w} open={openWord === w.id} onToggle={() => setOpenWord(openWord === w.id ? null : w.id)} />
+              <WordRow key={w.id} word={w} open={openWord === w.id} onToggle={() => setOpenWord(openWord === w.id ? null : w.id)} unitLabel={unitLabel(w.unit)} />
             ))}
           </div>
         </>
@@ -199,6 +210,7 @@ export default function WordsBrowser() {
         <div className="space-y-2">
           {units.map(([unit, list]) => {
             const open = openUnits.has(unit);
+            const no = unitLabel(unit);
             return (
               <Card key={unit} className="!p-0">
                 <button
@@ -208,9 +220,9 @@ export default function WordsBrowser() {
                 >
                   <span className="flex items-center gap-2.5 font-bold text-slate-900">
                     <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-xs font-bold text-emerald-600">
-                      {unit.replace(/^u0?/, "").padStart(2, "0")}
+                      {no}
                     </span>
-                    Unit {unit.replace(/^u0?/, "").padStart(2, "0")}
+                    Unit {no}
                   </span>
                   <span className="flex items-center gap-2 text-xs text-slate-400">
                     {list.length} 词
@@ -222,7 +234,7 @@ export default function WordsBrowser() {
                 {open ? (
                   <div className="space-y-1.5 border-t border-slate-100 p-3">
                     {list.map((w) => (
-                      <WordRow key={w.id} word={w} open={openWord === w.id} onToggle={() => setOpenWord(openWord === w.id ? null : w.id)} />
+                      <WordRow key={w.id} word={w} open={openWord === w.id} onToggle={() => setOpenWord(openWord === w.id ? null : w.id)} unitLabel={unitLabel(w.unit)} />
                     ))}
                   </div>
                 ) : null}
@@ -239,10 +251,12 @@ function WordRow({
   word,
   open,
   onToggle,
+  unitLabel,
 }: {
   word: VocabWord;
   open: boolean;
   onToggle: () => void;
+  unitLabel?: string;
 }) {
   return (
     <div
@@ -284,7 +298,7 @@ function WordRow({
             </div>
           ))}
           <p className="text-[11px] text-slate-400">
-            {word.stage === 1 ? "第 1 年" : word.stage === 2 ? "第 2 年" : "第 3 年"} · {word.unit}
+            {word.stage === 1 ? "第 1 年" : word.stage === 2 ? "第 2 年" : "第 3 年"} · Unit {unitLabel ?? word.unit}
             {word.tags.length > 0 ? ` · ${word.tags.join(" / ")}` : ""}
           </p>
         </div>

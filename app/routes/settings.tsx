@@ -106,7 +106,7 @@ export default function SettingsPage() {
           </select>
         </label>
         <p className="text-xs leading-relaxed text-slate-400">
-          按第一年计划(一年 3000 词),每天 10 词 + 到期复习,约 45 分钟。
+          每年词库 10,000 词:每天 10 词 + 到期复习约 45 分钟(一年约 3,600 词);想一年学完可调到 30 词/天。
         </p>
         <Button className="w-full" onClick={() => void save()}>
           保存

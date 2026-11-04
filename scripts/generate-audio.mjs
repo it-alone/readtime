@@ -1,8 +1,10 @@
-// 离线音频包生成:用 macOS 系统 TTS(say)+ afconvert 把全部内容的发音
-// 预生成成 m4a,解决浏览器 TTS 音质不稳定/语音模糊的问题。
+// 离线音频包生成:用 macOS 系统 TTS(say)+ afconvert 把发音预生成成 m4a,
+// 解决浏览器 TTS 音质不稳定/语音模糊的问题。
 //   public/audio/vocab/{wordId}.m4a        单词发音
 //   public/audio/vocab/{wordId}-ex.m4a     词例句发音
-//   public/audio/reading/{articleId}/s{n}.m4a  文章整句(编号与 pron 调度一致)
+//   public/audio/reading/{articleId}/s{n}.m4a  文章整句(编号与 pron 调度一致,--with-articles)
+// 默认只做词汇音频(增量):词库扩容后阅读/听力篇目过万,逐句全量音频会到 GB 级
+// (超 GitHub Pages 1GB 限制),文章句子走浏览器 TTS 兜底。
 // 增量生成:已存在的文件跳过(--force 全部重做);产物清单写入
 // public/data/audio-manifest.json(语音/时间/覆盖范围,供核对与排障)。
 // 句子切分逻辑必须与 app/lib/scheduler/pron.ts 的 splitSentences/
@@ -16,9 +18,13 @@ import { randomUUID } from "node:crypto";
 
 const ROOT = new URL("../", import.meta.url).pathname;
 const force = process.argv.includes("--force");
+// 词库扩容后阅读/听力篇目过万,逐句全量音频会到 GB 级(超 Pages 1GB 限制);
+// 默认只做词汇音频,文章/听力句子仍走浏览器 TTS 兜底(离线音频本就只覆盖手写期内容)
+const vocabOnly = !process.argv.includes("--with-articles");
 const CONCURRENCY = 4;
 const PRON_SENTENCE_MIN_WORDS = 4;
 const PRON_SENTENCE_MAX_WORDS = 14;
+const BITRATE = "32000";
 
 // 优先神经语音(清晰自然),经典增强语音兜底
 const VOICE_CANDIDATES = [
@@ -98,15 +104,29 @@ async function loadChunked(relDir, label) {
   }
 }
 
-/** 生成一个片段:aiff(say)→ m4a(afconvert,单声道 48kbps AAC)。 */
+/** 生成一个片段:aiff(say)→ m4a(afconvert,单声道 32kbps AAC,语音单声道够用且省 1/3 体积)。 */
 async function synthesize(text, outFile, voice) {
   const aiff = join(tmpdir(), `readtime-audio-${randomUUID()}.aiff`);
   try {
     await run("say", ["-v", voice, "-o", aiff, text]);
-    await run("afconvert", ["-f", "m4af", "-d", "aac", "-b", "48000", "-c", "1", aiff, outFile]);
+    await run("afconvert", ["-f", "m4af", "-d", "aac", "-b", BITRATE, "-c", "1", aiff, outFile]);
   } finally {
     await run("rm", ["-f", aiff]).catch(() => {});
   }
+}
+
+/** 词库按 stage 分片存储(vocab/stageN/manifest.json + part-XX.json),顺序拼回全量;stage 形如 "stage1" */
+async function loadVocabSharded(stage) {
+  const readJson = (rel) => readFile(join(ROOT, rel), "utf8").then(JSON.parse);
+  const manifest = await readJson(`public/data/vocab/${stage}/manifest.json`);
+  const words = [];
+  for (let p = 1; p <= manifest.parts; p++) {
+    words.push(...(await readJson(`public/data/vocab/${stage}/part-${String(p).padStart(2, "0")}.json`)));
+  }
+  if (words.length !== manifest.total) {
+    throw new Error(`词库 ${stage} 分片数(${words.length})与 manifest.total(${manifest.total})不一致`);
+  }
+  return words;
 }
 
 async function main() {
@@ -114,17 +134,14 @@ async function main() {
   console.log(`语音: ${voice}${force ? "(--force 全量重做)" : "(增量)"}`);
 
   // 三个 stage 词库全部纳入音频供给(增量生成,已有文件自动跳过)
-  const vocabStages = await Promise.all(
-    ["stage1", "stage2", "stage3"].map(async (s) =>
-      JSON.parse(await readFile(join(ROOT, `public/data/vocab/${s}.json`), "utf8"))
-    )
-  );
-  const articleList = (
-    await Promise.all([loadChunked("public/data/reading/l2", "阅读 l2"), loadChunked("public/data/reading/l3", "阅读 l3")])
+  const wordList = (
+    await Promise.all(["stage1", "stage2", "stage3"].map((s) => loadVocabSharded(s)))
   ).flat();
-  const wordList = vocabStages.flatMap((vocab) => vocab.words ?? vocab);
-  // 听力素材库(不存在时跳过,内容可先行落地再补音频)
-  const listeningList = await loadChunked("public/data/listening", "听力");
+  const articleList = vocabOnly
+    ? []
+    : (await Promise.all([loadChunked("public/data/reading/l2", "阅读 l2"), loadChunked("public/data/reading/l3", "阅读 l3")])).flat();
+  // 听力素材库(--with-articles 时才纳入,不存在时跳过,内容可先行落地再补音频)
+  const listeningList = vocabOnly ? [] : await loadChunked("public/data/listening", "听力");
 
   // 任务队列:[文本, 输出路径]
   const jobs = [];
