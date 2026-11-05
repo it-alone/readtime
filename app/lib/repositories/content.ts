@@ -1,5 +1,3 @@
-import { z } from "zod";
-import { GrammarLessonSchema, ListeningItemSchema, ReadingArticleSchema, VocabWordSchema } from "~/lib/api/schemas";
 import type {
   ContentRepository,
   GrammarLessonMeta,
@@ -7,64 +5,20 @@ import type {
   ReadingArticleMeta,
 } from "~/lib/repositories/types";
 import type { GrammarLesson, ListeningItem, ReadingArticle, Stage, VocabWord } from "~/models/types";
+import { type ContentKind, type IndexShape } from "./content-schemas";
+import { fetchParsed } from "./content-worker-client";
 
 // 静态内容仓储:public/data 分级 JSON 懒加载 + zod 校验 + 内存缓存(见 §7.1)。
 // 语法/阅读/听力内容量大(3000+ 条/模块),构建期按 §11 预算切分(单文件 ≤ 500KB):
 //   part-XX.json 全量数据(字节优先 450KB / 条数封顶)+ index.json 轻量 meta
 //   (meta 过大时再拆 index-part-XX.json):列表页只拉索引,详情页按 meta.part 定位单片。
 // 词库每 stage 同样拆成 vocab/stageN/(manifest + part-XX),整 stage 顺序加载。
+// fetch+解析+校验经 content-worker-client 交给后台 Worker,主线程不再被 MB 级 JSON 卡住。
 // BASE_URL:子路径部署(GitHub Pages /readtime/)下内容也在子路径下。
 
 const DATA_BASE = `${import.meta.env.BASE_URL}data/`;
 
-const cefr = z.enum(["A1", "A2", "B1", "B2"]);
-const stage3 = z.union([z.literal(1), z.literal(2), z.literal(3)]);
-
-const GrammarMetaSchema = z.object({
-  id: z.string().min(1),
-  title: z.string().min(1),
-  summary: z.string(),
-  level: cefr,
-  stage: stage3,
-  questionCount: z.number().int().positive(),
-  part: z.number().int().positive(),
-});
-const ReadingMetaSchema = z.object({
-  id: z.string().min(1),
-  title: z.string().min(1),
-  topic: z.string().min(1),
-  summary: z.string(),
-  level: cefr,
-  stage: z.union([z.literal(2), z.literal(3)]),
-  wordCount: z.number().int().positive(),
-  questionCount: z.number().int().positive(),
-  part: z.number().int().positive(),
-});
-const ListeningMetaSchema = z.object({
-  id: z.string().min(1),
-  title: z.string().min(1),
-  topic: z.string().min(1),
-  summary: z.string(),
-  level: cefr,
-  stage: stage3,
-  type: z.enum(["dialogue", "monologue"]),
-  sentenceCount: z.number().int().positive(),
-  questionCount: z.number().int().positive(),
-  part: z.number().int().positive(),
-});
-
-function indexSchema<T extends z.ZodTypeAny>(item: T) {
-  return z.object({
-    total: z.number().int(),
-    parts: z.number().int(),
-    /** meta 分片数:1 = items 内联在 index.json;>1 = items 为空,meta 在 index-part-XX.json */
-    indexParts: z.number().int().positive(),
-    items: z.array(item),
-  });
-}
-
-/** 词库分片清单头(vocab/stageN/manifest.json) */
-const VocabManifestSchema = z.object({ total: z.number().int(), parts: z.number().int().positive() });
+const partFile = (part: number) => `part-${String(part).padStart(2, "0")}.json`;
 
 /** 阅读 id(r2-xxx/r3-xxx)→ 分片目录名;非阅读 id 返回 undefined */
 function readingStageOf(id: string): 2 | 3 | undefined {
@@ -82,57 +36,54 @@ export class StaticContentRepository implements ContentRepository {
   private listeningIndex: ListeningItemMeta[] | null = null;
   private listeningParts = new Map<number, ListeningItem[]>();
 
-  private async fetchJson(url: string, label: string): Promise<unknown> {
-    const res = await fetch(url);
-    if (!res.ok) {
-      throw new Error(`${label}加载失败(${url}): HTTP ${res.status}`);
-    }
-    return res.json();
-  }
-
   async loadStage(stage: Stage): Promise<VocabWord[]> {
     const hit = this.vocabCache.get(stage);
     if (hit) return hit;
     const dir = `${DATA_BASE}vocab/stage${stage}`;
-    const manifest = VocabManifestSchema.parse(await this.fetchJson(`${dir}/manifest.json`, `词库清单(stage${stage})`));
+    const manifest = await fetchParsed(`${dir}/manifest.json`, "vocabManifest", `词库清单(stage${stage})`);
     const parts = await Promise.all(
       Array.from({ length: manifest.parts }, (_, i) =>
-        this.fetchJson(`${dir}/part-${String(i + 1).padStart(2, "0")}.json`, `词库(stage${stage})`),
+        fetchParsed(`${dir}/${partFile(i + 1)}`, "vocabWords", `词库(stage${stage})`),
       ),
     );
-    const words = parts.flatMap((p) => z.array(VocabWordSchema).parse(p));
+    const words = parts.flat();
     this.vocabCache.set(stage, words);
     return words;
   }
 
   /** 加载分片索引:index.json 内联 items 时直接用,否则并行拉全部 index-part-XX.json */
-  private async loadIndexDir<M extends z.ZodTypeAny>(
+  private async loadIndexDir<M>(
     dir: string,
     label: string,
-    metaSchema: M,
-  ): Promise<z.infer<M>[]> {
-    const idx = indexSchema(metaSchema).parse(await this.fetchJson(`${dir}/index.json`, label));
+    indexKind: ContentKind,
+    metaKind: ContentKind,
+  ): Promise<M[]> {
+    // kind 与 M 的对应关系由调用点固定(如 "grammarIndex" → GrammarLessonMeta),注册表已保证形状
+    const idx = (await fetchParsed(`${dir}/index.json`, indexKind, label)) as IndexShape<M>;
     if (idx.indexParts <= 1) return idx.items;
     const parts = await Promise.all(
       Array.from({ length: idx.indexParts }, (_, i) =>
-        this.fetchJson(`${dir}/index-part-${String(i + 1).padStart(2, "0")}.json`, `${label}分片`),
+        fetchParsed(`${dir}/index-part-${String(i + 1).padStart(2, "0")}.json`, metaKind, `${label}分片`) as Promise<M[]>,
       ),
     );
-    return parts.flatMap((p) => z.array(metaSchema).parse(p));
+    return parts.flat();
   }
 
   async loadGrammarIndex(): Promise<GrammarLessonMeta[]> {
     if (this.grammarIndex) return this.grammarIndex;
-    this.grammarIndex = await this.loadIndexDir(`${DATA_BASE}grammar`, "语法课程索引", GrammarMetaSchema);
+    this.grammarIndex = await this.loadIndexDir<GrammarLessonMeta>(
+      `${DATA_BASE}grammar`,
+      "语法课程索引",
+      "grammarIndex",
+      "grammarMetas",
+    );
     return this.grammarIndex;
   }
 
   private async grammarPart(part: number): Promise<GrammarLesson[]> {
     const hit = this.grammarParts.get(part);
     if (hit) return hit;
-    const items = z.array(GrammarLessonSchema).parse(
-      await this.fetchJson(`${DATA_BASE}grammar/part-${String(part).padStart(2, "0")}.json`, "语法课程"),
-    );
+    const items = await fetchParsed(`${DATA_BASE}grammar/${partFile(part)}`, "grammarLessons", "语法课程");
     this.grammarParts.set(part, items);
     return items;
   }
@@ -146,7 +97,12 @@ export class StaticContentRepository implements ContentRepository {
   private async readingIndex(stage: 2 | 3): Promise<ReadingArticleMeta[]> {
     const hit = this.readingIndexes.get(stage);
     if (hit) return hit;
-    const items = await this.loadIndexDir(`${DATA_BASE}reading/l${stage}`, `阅读素材索引(l${stage})`, ReadingMetaSchema);
+    const items = await this.loadIndexDir<ReadingArticleMeta>(
+      `${DATA_BASE}reading/l${stage}`,
+      `阅读素材索引(l${stage})`,
+      "readingIndex",
+      "readingMetas",
+    );
     this.readingIndexes.set(stage, items);
     return items;
   }
@@ -161,8 +117,10 @@ export class StaticContentRepository implements ContentRepository {
     const key = `${stage}:${part}`;
     const hit = this.readingParts.get(key);
     if (hit) return hit;
-    const items = z.array(ReadingArticleSchema).parse(
-      await this.fetchJson(`${DATA_BASE}reading/l${stage}/part-${String(part).padStart(2, "0")}.json`, "阅读素材"),
+    const items = await fetchParsed(
+      `${DATA_BASE}reading/l${stage}/${partFile(part)}`,
+      "readingArticles",
+      "阅读素材",
     );
     this.readingParts.set(key, items);
     return items;
@@ -204,16 +162,19 @@ export class StaticContentRepository implements ContentRepository {
 
   async loadListeningIndex(): Promise<ListeningItemMeta[]> {
     if (this.listeningIndex) return this.listeningIndex;
-    this.listeningIndex = await this.loadIndexDir(`${DATA_BASE}listening`, "听力素材索引", ListeningMetaSchema);
+    this.listeningIndex = await this.loadIndexDir<ListeningItemMeta>(
+      `${DATA_BASE}listening`,
+      "听力素材索引",
+      "listeningIndex",
+      "listeningMetas",
+    );
     return this.listeningIndex;
   }
 
   private async listeningPart(part: number): Promise<ListeningItem[]> {
     const hit = this.listeningParts.get(part);
     if (hit) return hit;
-    const items = z.array(ListeningItemSchema).parse(
-      await this.fetchJson(`${DATA_BASE}listening/part-${String(part).padStart(2, "0")}.json`, "听力素材"),
-    );
+    const items = await fetchParsed(`${DATA_BASE}listening/${partFile(part)}`, "listeningItems", "听力素材");
     this.listeningParts.set(part, items);
     return items;
   }

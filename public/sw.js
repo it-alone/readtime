@@ -1,13 +1,14 @@
 // readTime service worker(阶段 0 纯前端离线化,见 README"技术栈"):
 //   导航请求 network-first → 断网回退缓存的 SPA shell;
 //   /assets/*(带 hash 的构建产物)构建时全量预缓存(含未访问路由的 chunk),cache-first;
-//   /data/*.json(词库/语法/阅读/听力)network-first,联网时静默更新,内容扩充即时生效。
+//   /data/*.json(词库/语法/阅读/听力)stale-while-revalidate:缓存命中先回页面
+//   (MB 级内容零等待、加载不卡点击),后台静默更新缓存,联网更新的内容下次加载生效。
 // IndexedDB 学习数据不经 SW,天然离线。
 //
 // 部署基路径从注册 scope 推导(根路径部署 → "/",GitHub Pages 项目站点 → "/readtime/"),
 // 所有预缓存 URL 与路径匹配统一挂在 BASE 下,两种部署共用同一份 sw.js。
 
-const VERSION = "v10";
+const VERSION = "v11";
 const BASE = new URL(self.registration.scope).pathname; // 末尾带 /
 const under = (path) => `${BASE}${path.replace(/^\//, "")}`;
 const SHELL_CACHE = `readtime-shell-${VERSION}`;
@@ -123,19 +124,26 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // 内容 JSON:联网静默更新,离线用上次缓存
+  // 内容 JSON:stale-while-revalidate —— 命中缓存先立即回给页面(大内容加载不再等网络),
+  // 同时后台拉最新入缓存(下次加载生效);未命中走网络,只缓存 200
+  // (缺失分片的 404/宿主错误页一旦入缓存,离线回退会一直命中错误响应)。
   if (url.pathname.startsWith(under("data/"))) {
     event.respondWith(
-      fetch(request)
-        .then((res) => {
-          // 只缓存 200:缺失分片的 404/宿主错误页一旦入缓存,离线回退会一直命中错误响应
+      caches.match(request).then((hit) => {
+        const refresh = fetch(request).then((res) => {
           if (res.ok) {
             const copy = res.clone();
             caches.open(CONTENT_CACHE).then((cache) => cache.put(request, copy));
           }
           return res;
-        })
-        .catch(() => caches.match(request))
+        });
+        if (hit) {
+          // 后台更新失败(离线)不影响本次响应
+          refresh.catch(() => {});
+          return hit;
+        }
+        return refresh.catch(() => caches.match(request));
+      })
     );
     return;
   }

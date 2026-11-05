@@ -41,10 +41,16 @@ export default {
           "0%": { opacity: "0", transform: "scale(0.92)" },
           "100%": { opacity: "1", transform: "scale(1)" },
         },
+        // 路由切换进度条:细条从左侧滑出扫过整行,循环到加载结束
+        "route-progress": {
+          "0%": { transform: "translateX(-110%)" },
+          "100%": { transform: "translateX(360%)" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) both",
         "pop-in": "pop-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both",
+        "route-progress": "route-progress 1.1s ease-in-out infinite",
       },
     },
   },

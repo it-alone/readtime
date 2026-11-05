@@ -7,6 +7,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useNavigation,
   useRevalidator,
   useRouteError,
 } from "@remix-run/react";
@@ -68,11 +69,31 @@ function SettingsSyncBridge() {
   return null;
 }
 
+/**
+ * 路由切换全局进度条:clientLoader 期间旧页面保持展示且无原生反馈,
+ * 大内容(词库/正文分片)拉取时点击像"没反应";顶部滚动细条给出即时加载反馈。
+ */
+function RouteTransitionBar() {
+  const navigation = useNavigation();
+  const busy = navigation.state !== "idle";
+  return (
+    <div
+      aria-hidden
+      className={`pointer-events-none fixed inset-x-0 top-0 z-50 h-[3px] transition-opacity duration-200 ${
+        busy ? "opacity-100" : "opacity-0"
+      }`}
+    >
+      <div className="h-full w-2/5 animate-route-progress rounded-r-full bg-gradient-to-r from-amber-300 via-amber-500 to-amber-600" />
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <ServicesProvider>
       <ServiceWorkerRegister />
       <SettingsSyncBridge />
+      <RouteTransitionBar />
       <Outlet />
     </ServicesProvider>
   );
