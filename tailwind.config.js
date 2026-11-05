@@ -15,6 +15,16 @@ export default {
           "Microsoft YaHei",
           "sans-serif",
         ],
+        // 展示字体:西文 Georgia 衬线 + 中文宋体,书卷气标题/大数字用
+        display: [
+          "Georgia",
+          "Times New Roman",
+          "Songti SC",
+          "STSong",
+          "Noto Serif SC",
+          "SimSun",
+          "serif",
+        ],
       },
       boxShadow: {
         // 卡片底影:近处 1px 锐影 + 远处柔影,替代 Tailwind 默认的平贴感

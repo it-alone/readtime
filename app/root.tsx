@@ -11,6 +11,7 @@ import {
   useRouteError,
 } from "@remix-run/react";
 import { ServicesProvider } from "~/context/providers";
+import { BookOpenIcon } from "~/components/icons";
 import { subscribeSettingsChanged } from "~/lib/storage/broadcast";
 import stylesheet from "~/tailwind.css?url";
 
@@ -27,7 +28,7 @@ export const links: LinksFunction = () => [
 export const meta: MetaFunction = () => [
   { title: "readTime · 读时" },
   { name: "description", content: "三年系统化英语学习计划(基础 · 进阶 · 高阶)" },
-  { name: "theme-color", content: "#10b981" },
+  { name: "theme-color", content: "#faf7f0" },
   { name: "apple-mobile-web-app-capable", content: "yes" },
   { name: "apple-mobile-web-app-status-bar-style", content: "default" },
 ];
@@ -41,7 +42,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="min-h-screen bg-[#f7faf9] text-slate-900 antialiased">
+      <body className="min-h-screen bg-[#faf7f0] text-stone-900 antialiased">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -79,11 +80,11 @@ export default function App() {
 
 export function HydrateFallback() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-[#f7faf9]">
-      <div className="flex h-14 w-14 animate-pulse items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 text-2xl shadow-glow">
-        📖
+    <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-[#faf7f0]">
+      <div className="flex h-14 w-14 animate-pulse items-center justify-center rounded-2xl bg-gradient-to-br from-[#1b2a4d] to-[#2c4370] text-2xl text-amber-300 shadow-lift">
+        <BookOpenIcon className="h-7 w-7" />
       </div>
-      <p className="text-sm font-medium text-slate-400">readTime 载入中…</p>
+      <p className="text-sm font-medium text-stone-400">readTime 载入中…</p>
     </div>
   );
 }
@@ -96,13 +97,13 @@ export function ErrorBoundary() {
       ? error.message
       : "未知错误";
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-[#f7faf9] p-6 text-center">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-[#faf7f0] p-6 text-center">
       <p className="text-5xl">😵</p>
       <h1 className="text-lg font-bold">出错了</h1>
-      <p className="text-sm text-slate-500">{message}</p>
+      <p className="text-sm text-stone-500">{message}</p>
       <a
         href={BASE}
-        className="mt-1 rounded-2xl bg-gradient-to-b from-emerald-500 to-emerald-600 px-5 py-2.5 text-sm font-semibold text-white shadow-glow active:scale-95"
+        className="mt-1 rounded-2xl bg-gradient-to-b from-[#1b2a4d] to-[#2c4370] px-5 py-2.5 text-sm font-semibold text-amber-200 shadow-lift active:scale-95"
       >
         返回首页
       </a>
