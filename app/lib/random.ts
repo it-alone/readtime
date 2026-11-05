@@ -10,7 +10,9 @@ export function shuffleSeeded<T>(arr: T[], seed: number): T[] {
   const a = [...arr];
   let s = seed || 1;
   for (let i = a.length - 1; i > 0; i--) {
-    s = (s * 1103515245 + 12345) & 0x7fffffff;
+    // 乘法必须用 Math.imul:普通 * 在 s≈2^31 时超出浮点安全整数范围,低位丢失后
+    // & 0x7fffffff 恒为 0,每轮 j 都是 0,洗牌退化为固定排列(正确项永远停在第 4 位)
+    s = (Math.imul(s, 1103515245) + 12345) & 0x7fffffff;
     const j = s % (i + 1);
     [a[i], a[j]] = [a[j], a[i]];
   }
