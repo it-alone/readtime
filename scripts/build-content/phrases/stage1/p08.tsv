@@ -1,0 +1,28 @@
+# group	饮食购物
+order food	点餐	A1	We order food on the phone at night.	我们晚上用手机点餐。	food|media	order|food
+a table for two	两人桌	A2	A table for two, please.	请给我们一张两人桌。	food|service	table|two
+look at the menu	看菜单	A1	Let's look at the menu first.	我们先看看菜单吧。	food	look|menu
+something to drink	喝的东西	A1	Would you like something to drink?	你想喝点什么吗?	food|social	something|drink
+something to eat	吃的东西	A1	I want something to eat now.	我现在想要点吃的。	food	something|eat
+would like	想要	A1	I would like a cup of tea, please.	我想要一杯茶。	food|social	would|like
+feel like	想要	A2	I feel like a cold drink after running.	跑完步我想喝杯冷饮。	food|sports	feel|like
+a bag of	一袋	A1	Please buy a bag of rice.	请买一袋大米。	food|shopping	bag
+a kilo of	一公斤	A1	I need a kilo of apples.	我需要一公斤苹果。	food|shopping	kilo
+a box of	一盒	A1	He buys a box of milk every week.	他每周买一盒牛奶。	food|shopping	box
+a bowl of	一碗	A1	I'd like a bowl of noodles.	我想要一碗面条。	food	bowl
+a plate of	一盘	A1	A plate of beef is on the table.	桌上有一盘牛肉。	food	plate
+a bit of	一点	A1	Add a bit of salt to the soup.	往汤里加一点盐。	food	bit
+a few	一些	A1	I buy a few bananas on my way home.	回家路上我买了几根香蕉。	food|shopping	few
+how many	多少(接可数)	A1	How many apples do we need?	我们需要多少个苹果?	food|shopping	how|many
+too much	太多(接不可数)	A1	Don't eat too much sugar.	别吃太多糖。	food|health	too|much
+too many	太多(接可数)	A1	There are too many people in the shop.	店里人太多了。	shopping	too|many
+be hungry	饿了	A1	I'm hungry. Let's eat something.	我饿了,我们吃点东西吧。	food	hungry
+be thirsty	渴了	A1	The kids are thirsty after running.	孩子们跑完步很渴。	food|sports	thirsty
+be full	饱了	A1	No more, thanks. I'm full.	不要了,谢谢,我饱了。	food|social	full
+taste good	尝起来不错	A1	The noodles taste really good.	这面条尝起来真不错。	food	taste|good
+smell good	闻起来很香	A1	The cake smells good.	蛋糕闻起来很香。	food	smell|good
+on the menu	在菜单上	A1	Fish is on the menu today.	今天菜单上有鱼。	food	menu
+pay in cash	付现金	A2	You can pay in cash in this shop.	在这家店你可以付现金。	shopping	pay|cash
+for sale	待售	A2	The old bike is for sale.	那辆旧自行车待售。	shopping	sale
+sell out	卖光	A1	The bread sells out before noon.	面包中午前就卖光了。	food|shopping	sell
+the right size	合适的尺码	A2	Do you have the right size for me?	有适合我的尺码吗?	shopping	right|size

@@ -133,7 +133,7 @@
 | --- | --- | --- | --- |
 | `_index.tsx` | `/` | 今日任务台(打卡、连胜、任务入口) | Progress + DailyLog |
 | `words.tsx` | `/words` | 词库浏览(三年 10,000 词,按 unit 折叠 + 搜索 + 级别筛选 + 发音) | ContentRepo(静态,按 stage 懒加载) |
-| `phrases.tsx` | `/phrases` | 短语库浏览(三年 478 条,按分组折叠 + 搜索 + 级别筛选 + TTS 发音,核心词 ⊆ 累积词库) | ContentRepo(静态,按 stage 懒加载) |
+| `phrases.tsx` | `/phrases` | 短语库浏览(三年 1,059 条,按分组折叠 + 搜索 + 级别筛选 + TTS 发音,核心词 ⊆ 累积词库) | ContentRepo(静态,按 stage 懒加载) |
 | `learn.vocab.tsx` | `/learn/vocab` | 词汇学习会话(新词+复习混合) | ReviewRepo + ContentRepo |
 | `learn.grammar._index.tsx` / `learn.grammar.$lessonId.tsx` | `/learn/grammar(/:id)` | 语法课列表 / 微课+练习 | ContentRepo(静态) |
 | `learn.listening._index.tsx` | `/learn/listening` | 听力选择页(今日听写入口 + 精听素材库) | ContentRepo + VocabService |
@@ -360,7 +360,7 @@ public/data/
 ├── vocab/stage1/          # 第一年 3000 词(99 主题单元,u01–u99)= manifest.json + part-01..02
 ├── vocab/stage2/          # 第二年 3000 词(100 主题单元,u01–u100:通用主题 + 8 大场景)= manifest + 2 片
 ├── vocab/stage3/          # 第三年 4000 词(135 单元,u01–u135:AWL 学术词 + 主题/场景单元,全局 term 零重复)= manifest + 3 片
-├── phrases/stage{1,2,3}/  # 三年词库配套短语 478 条(159/159/160;4 分组:动词/介词/习惯/场景;核心词强校验 ⊆ 累积词库)= manifest + 各 1 片
+├── phrases/stage{1,2,3}/  # 三年词库配套短语 1,059 条(411/327/321;基础 4 组:动词/介词/习惯/场景 + 日常高频/职场学术/习语谚语等 8/8/6 补充组;核心词强校验 ⊆ 累积词库)= manifest + 各 1 片
 ├── grammar/               # 3,426 课 = 每 stage 1,142 课;part 28 片 + 索引拆 7 片
 │   ├── index.json         #   { total, parts, indexParts, items:[{id,title,summary,level,stage,questionCount,part}] } 列表页只拉这个
 │   ├── index-part-XX.json #   索引 meta 过大时的分片(indexParts > 1 时 index.items 为空)

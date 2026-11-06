@@ -1,0 +1,11 @@
+# group	生活消费
+pay the bill	买单	A1	Let me pay the bill this time.	这次我来买单。	food|shopping	pay|bill
+half price	半价	A1	The shoes are half price now.	这双鞋现在半价。	shopping	half|price
+at a good price	价格划算	A2	We got the sofa at a good price.	我们以划算的价格买到了沙发。	home|shopping	good|price
+online shopping	网上购物	A2	Online shopping saves a lot of time.	网上购物省很多时间。	media|shopping	online|shopping
+place an order	下订单	B1	Place an order on your phone first.	先在手机上下单。	media|shopping	place|order
+in stock	有货	B1	The red one is still in stock.	红色的那款还有货。	shopping	stock
+out of stock	缺货	B1	The milk is out of stock today.	今天牛奶缺货了。	food|shopping	stock
+buy one get one free	买一赠一	A2	The cakes are buy one get one free today.	今天蛋糕买一赠一。	food|shopping	buy|get|free
+try your luck	试试运气	B1	Try your luck at the game booth.	去游戏摊位试试运气吧。	culture|social	try|luck
+pay by phone	手机支付	A2	You can pay by phone in most shops now.	现在大多数店都能手机支付。	media|shopping	pay|phone

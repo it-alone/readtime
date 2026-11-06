@@ -1,12 +1,19 @@
 # -*- coding: utf-8 -*-
-"""短语库生成入口:phrase_frames.FIXED → scripts/build-content/phrases/stage{1,2,3}/p0X.tsv。
+"""短语库生成入口:phrase_frames*.py 多内容源 → scripts/build-content/phrases/stage{1,2,3}/pXX.tsv。
 
 「根据三年的词汇量补充对应的短语」的落点:
 - 每条短语的内容词须命中对应 stage 的累积词库(第 2 年含第 1 年,依此类推),
   命中词写入 words 列,零命中则丢弃并告警——短语与三年 30,000 词直接挂钩;
 - 难度对齐各学年:stage1 = A1/A2、stage2 = A2/B1、stage3 = B1/B2。
 
-用法:python3 gen_phrases.py            # 重建短语 TSV(内容为静态 curated 源,重跑结果一致)
+内容源分层(全部静态 curated,重跑结果一致):
+- phrase_frames.py   FIXED:各 stage 基础 4 组(动词短语/介词短语/习惯表达/场景搭配);
+- phrase_frames2.py  SUPP:stage1 日常高频补充 8 组(口语/校园/起居/饮食/出行/情感/时间/运动);
+- phrase_frames3.py  SUPP:stage2 补充 8 组(口语应答/职场/观点衔接/人际/时间计划/消费/数字生活/天气);
+- phrase_frames4.py  SUPP:stage3 补充 6 组(高阶动词短语/学术论证/社会话题/习语谚语/让步对比/高频搭配)。
+同 stage 内补充组追加在基础组之后,p 编号稳定;跨文件短语重复由全局查重兜底报错。
+
+用法:python3 gen_phrases.py            # 重建短语 TSV
      python3 gen_phrases.py --dry-run  # 只打印校验统计,不写文件
 
 与 main.py 解耦:短语板块独立再生成,不会触发语法/阅读/听力的 append-only 扩容。
@@ -17,7 +24,16 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 import engine as E  # noqa: E402
-from phrase_frames import FIXED  # noqa: E402
+from phrase_frames import FIXED as _BASE  # noqa: E402
+from phrase_frames2 import SUPP as _S2  # noqa: E402
+from phrase_frames3 import SUPP as _S3  # noqa: E402
+from phrase_frames4 import SUPP as _S4  # noqa: E402
+
+# 多源合并:基础组在前,补充组按文件序追加
+FIXED = {
+    s: _BASE[s] + _S2.get(s, []) + _S3.get(s, []) + _S4.get(s, [])
+    for s in (1, 2, 3)
+}
 
 DRY = "--dry-run" in sys.argv
 
@@ -34,7 +50,11 @@ STOPWORDS = {
 
 
 def base_forms(w):
-    """词形还原候选:原形优先,再试复数/三单/ies→y 的屈折变化(词库收的是原形)。"""
+    """词形还原候选:原形优先,再试复数/三单/ies→y 及 ed/er/ing 的屈折变化(词库收的是原形)。
+
+    覆盖日常短语里的常见屈折:sooner→soon、bigger→big(双写辅音折叠)、making→make(去 ing 补 e)、
+    based→base(去 ed 补 e / 去 d)。候选仅用于词库命中,不要求形态学精确,误还原自然查不到即跳过。
+    """
     forms = [w]
     if w.endswith("ies") and len(w) > 3:
         forms.append(w[:-3] + "y")
@@ -42,6 +62,19 @@ def base_forms(w):
         forms.append(w[:-2])
     if w.endswith("s") and len(w) > 2:
         forms.append(w[:-1])
+    if w.endswith("ed") and len(w) > 3:
+        stem = w[:-2]
+        forms += [w[:-1], stem, stem + "e"]  # based→base / worked→work / liked→like
+    if w.endswith("er") and len(w) > 4:
+        stem = w[:-2]
+        forms += [stem, stem + "e"]  # sooner→soon / larger→large
+        if len(stem) > 2 and stem[-1] == stem[-2]:
+            forms.append(stem[:-1])  # bigger→big(双写辅音折叠)
+    if w.endswith("ing") and len(w) > 4:
+        stem = w[:-3]
+        forms += [stem, stem + "e"]  # waiting→wait / making→make
+        if len(stem) > 2 and stem[-1] == stem[-2]:
+            forms.append(stem[:-1])  # running→run(双写辅音折叠)
     return forms
 
 

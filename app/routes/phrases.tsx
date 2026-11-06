@@ -129,7 +129,7 @@ export default function PhrasesBrowser() {
   return (
     <PageShell title="短语库" back="/">
       <p className="text-xs leading-relaxed text-slate-400">
-        三年词库配套短语(每年 150+ 条,核心词均出自对应学年词库),按分组浏览,支持搜索与级别筛选。
+        三年词库配套短语(共 1,000+ 条,覆盖日常口语、职场沟通、习语谚语等高频场景,核心词均出自对应学年词库),按分组浏览,支持搜索与级别筛选。
       </p>
 
       {/* 年份切换:分段控制器 */}

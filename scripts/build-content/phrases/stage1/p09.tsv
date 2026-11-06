@@ -1,0 +1,28 @@
+# group	出行地点
+on the left	在左边	A1	The bank is on the left of the park.	银行在公园左边。	travel|service	left
+on the right	在右边	A1	The library is on the right of the school.	图书馆在学校右边。	campus|travel	right
+across from	在……对面	A2	The hotel is across from the train station.	旅馆在火车站对面。	travel	across
+at the corner	在拐角处	A1	Wait for me at the corner of the street.	在街角等我。	travel	corner
+at the end of	在……尽头	A1	Our classroom is at the end of the hall.	我们的教室在走廊尽头。	campus	end
+at the top of	在……顶部	A1	Write your name at the top of the page.	把名字写在页面顶部。	campus	top
+at the bottom of	在……底部	A2	The answer is at the bottom of the page.	答案在页面底部。	campus	bottom
+go straight	直走	A1	Go straight and turn left at the shop.	一直走,到商店处左转。	travel	go|straight
+turn left	向左转	A1	Turn left at the second crossing.	在第二个路口向左转。	travel	turn|left
+turn right	向右转	A1	Turn right and you'll see the hospital.	向右转,你就会看到医院。	travel|health	turn|right
+cross the road	过马路	A1	Look both ways before you cross the road.	过马路前两边都要看看。	travel	cross|road
+on the road	在马路上	A1	There are many cars on the road now.	现在马路上车很多。	travel	road
+get in	上(小汽车)	A1	Get in the car. Let's go!	上车吧,我们出发!	travel	get
+get out of	从……下来	A1	We get out of the taxi at the school gate.	我们在校门口下出租车。	travel|campus	get
+take a taxi	坐出租车	A1	Let's take a taxi to the airport.	我们坐出租车去机场吧。	travel	take|taxi
+take the bus	坐公交车	A1	I take the bus to work every day.	我每天坐公交车上班。	travel|work	take|bus
+take the subway	坐地铁	A1	I take the subway in the morning.	我早上坐地铁。	travel	take|subway
+miss the bus	错过公交车	A1	Hurry up, or we'll miss the bus.	快点,不然我们就错过公交车了。	travel	miss|bus
+at the station	在车站	A1	I'll wait for you at the station.	我在车站等你。	travel	station
+at the airport	在机场	A1	We meet at the airport at six.	我们六点在机场碰头。	travel	airport
+on the map	在地图上	A1	Find the park on the map first.	先在地图上找到公园。	travel	map
+far away	遥远	A1	The village is far away from the city.	那个村庄离城市很远。	nature|travel	far|away
+near here	在这附近	A1	Is there a bank near here?	这附近有银行吗?	service|travel	near|here
+not far	不远	A1	The school is not far from my home.	学校离我家不远。	campus|travel	far
+at the traffic lights	在红绿灯处	A1	Turn left at the traffic lights.	在红绿灯处向左转。	travel	traffic|light
+ask the way	问路	A1	We ask the way to the museum.	我们打听去博物馆的路。	travel	ask|way
+show me the way	给我指路	A2	Can you show me the way to the bank?	你能给我指一下去银行的路吗?	service|travel	show|way

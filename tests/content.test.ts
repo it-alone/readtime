@@ -220,14 +220,14 @@ describe("词库内容契约", () => {
 });
 
 describe("短语库内容契约(三年词库配套短语)", () => {
-  it("各 stage(manifest + part 分片)通过 PhraseItemSchema 校验且达到规模目标(每年 ≥ 150 条)", () => {
+  it("各 stage(manifest + part 分片)通过 PhraseItemSchema 校验且达到规模目标(每年 ≥ 300 条)", () => {
     for (const [items, stage] of [
       [phrases1, 1],
       [phrases2, 2],
       [phrases3, 3],
     ] as const) {
       const parsed = PhraseItemSchema.array().parse(items);
-      expect(parsed.length, `短语 stage${stage} 规模`).toBeGreaterThanOrEqual(150);
+      expect(parsed.length, `短语 stage${stage} 规模`).toBeGreaterThanOrEqual(300);
     }
   });
 

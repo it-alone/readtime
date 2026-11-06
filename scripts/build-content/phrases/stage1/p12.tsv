@@ -1,0 +1,21 @@
+# group	运动健康
+play football	踢足球	A1	The boys play football after school.	男孩们放学后踢足球。	sports|campus	play|football
+play basketball	打篮球	A1	We play basketball on Saturday.	我们周六打篮球。	sports	play|basketball
+play volleyball	打排球	A1	Girls like to play volleyball here.	女孩们喜欢在这里打排球。	sports	play|volleyball
+play table tennis	打乒乓球	A1	I play table tennis with my dad.	我和爸爸打乒乓球。	sports|family	play|table|tennis
+go running	去跑步	A1	We go running in the park.	我们去公园跑步。	sports|nature	go|running
+do exercise	锻炼	A1	Do exercise every day to keep healthy.	每天锻炼保持健康。	health	exercise
+warm up	热身	A2	Warm up before you run fast.	快跑之前先热身。	sports|health	warm
+lose weight	减肥	A1	He runs every night to lose weight.	他每晚跑步减肥。	health|sports	lose|weight
+stay healthy	保持健康	A1	Eat well and stay healthy.	吃好点,保持健康。	health	stay|healthy
+in good health	身体健康	A2	Grandma is still in good health.	奶奶身体依然健康。	health|family	good|health
+take your temperature	量体温	A2	The nurse takes your temperature first.	护士先给你量体温。	health|service	take|temperature
+in hospital	住院	A1	Tom is in hospital with a broken leg.	汤姆腿骨折住院了。	health	hospital
+take a nap	小睡一会儿	A1	Dad takes a nap after lunch.	爸爸午饭后小睡一会儿。	home|family	take|nap
+fall asleep	入睡	A2	Soft music helps me fall asleep.	轻柔的音乐帮我入睡。	home|media	fall|asleep
+feel tired	感到累	A1	I feel tired after the basketball game.	篮球赛后我感到很累。	sports|health	feel|tired
+feel sick	不舒服	A1	She feels sick on the bus.	她坐公交车时觉得不舒服。	health|travel	feel|sick
+have a headache	头疼	A1	I have a headache today.	我今天头疼。	health	have|headache
+catch a cold	感冒	A1	Wear a coat, or you'll catch a cold.	穿上外套,不然你会感冒的。	health	catch|cold
+feel better	感觉好些	A1	Drink more water and you'll feel better.	多喝水,你会感觉好些的。	health	feel|better
+get well soon	早日康复	A2	Rest well and get well soon!	好好休息,早日康复!	health|social	get|well|soon

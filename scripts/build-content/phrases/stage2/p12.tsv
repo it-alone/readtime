@@ -1,0 +1,10 @@
+# group	天气出行
+bad weather	坏天气	A1	We stay at home in bad weather.	坏天气我们就待在家里。	home|nature	bad|weather
+weather report	天气预报	A1	The weather report says it will snow tonight.	天气预报说今晚会下雪。	media|nature	weather|report
+rain hard	下大雨	A1	It rained hard last night.	昨晚雨下得很大。	nature	rain|hard
+in the rain	在雨中	A1	We walked home in the rain.	我们冒着雨走回了家。	nature|travel	rain
+heavy snow	大雪	A1	Heavy snow closed the school for a day.	一场大雪让学校停课一天。	campus|nature	heavy|snow
+strong wind	大风	A1	A strong wind blew off my hat.	一阵大风吹掉了我的帽子。	nature	strong|wind
+blow away	吹走	A1	The wind blew my paper away.	风把我的纸吹走了。	nature|campus	blow|away
+get cold	变冷	A1	The weather gets cold in late October.	十月下旬天气就变冷了。	nature|time	get|cold
+come out	出来;(太阳)露出	A1	The sun comes out after the rain.	雨后太阳出来了。	nature	come
