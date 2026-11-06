@@ -306,6 +306,8 @@ describe("性能预算(ARCHITECTURE.md §11:public/data 单文件 ≤ 500KB)", (
         const url = new URL(`${entry.name}${entry.isDirectory() ? "/" : ""}`, dir);
         if (entry.isDirectory()) walk(url);
         else if (entry.name.endsWith(".json")) {
+          // audio-manifest 是音频包生成记录(供核对排障,非运行时内容,SW 也不预缓存),不占内容预算
+          if (entry.name === "audio-manifest.json") continue;
           const size = statSync(url).size;
           if (size > 500 * 1024) oversize.push(`${entry.name} ${(size / 1024).toFixed(0)}KB`);
         }
