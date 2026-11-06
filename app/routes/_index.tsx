@@ -4,6 +4,7 @@ import { Card } from "~/components/ui";
 import {
   BookOpenIcon,
   ChartIcon,
+  ChatIcon,
   FolderIcon,
   HeadphonesIcon,
   MicIcon,
@@ -396,9 +397,10 @@ export default function Index() {
         ) : null}
 
         {/* 全局工具 */}
-        <div className="grid grid-cols-3 gap-2.5">
+        <div className="grid grid-cols-2 gap-2.5">
           {[
             { to: "/words", icon: FolderIcon, label: "词库浏览" },
+            { to: "/phrases", icon: ChatIcon, label: "短语库" },
             { to: "/stats", icon: ChartIcon, label: "学习周报" },
             { to: "/settings", icon: SlidersIcon, label: "设置" },
           ].map((t) => {

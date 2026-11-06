@@ -20,6 +20,25 @@ export interface VocabWord {
 /** 生词来源:主线每日任务(undefined=旧数据,视同主线)或阅读点词加入 */
 export type WordSource = "main" | "reading";
 
+/**
+ * 短语库条目:按三年词库配套补充(stage1=A1/A2、stage2=A2/B1、stage3=B1/B2),
+ * words = 短语核心词(构建期保证 ⊆ 对应 stage 累积词库 term),浏览页据此展示词库关联
+ */
+export interface PhraseItem {
+  id: string;
+  phrase: string;
+  meaning: string;
+  level: CEFR;
+  stage: Stage;
+  /** TSV 分组文件名(p01…),追加新分组不挪动既有 id */
+  unit: string;
+  /** 分组中文名(动词短语/介词短语/习惯表达/场景搭配),UI 折叠展示 */
+  group: string;
+  example: { en: string; zh: string };
+  tags: string[];
+  words: string[];
+}
+
 /** SM-2 复习状态(每词一条) */
 export interface ReviewState {
   wordId: string;

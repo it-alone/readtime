@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // 内容管线(ARCHITECTURE.md §7.4 内容即数据):
 //   scripts/build-content/vocab/stage{1,2,3}/*.tsv →  public/data/vocab/stageN/(manifest + part-XX).json
+//   scripts/build-content/phrases/stage{1,2,3}/*.tsv → public/data/phrases/stageN/(manifest + part-XX).json
 //   scripts/build-content/grammar/stage{1,2,3}/*.tsv →  public/data/grammar/(index + part-XX).json
 //   scripts/build-content/reading/l2/*.tsv       →  public/data/reading/l2/(index + part-XX).json
 //   scripts/build-content/reading/l3/*.tsv       →  public/data/reading/l3/(index + part-XX).json
@@ -24,6 +25,13 @@
 //   列(制表符分隔):term  phonetic  meaning  level  example_en  example_zh  tags(| 分隔)
 //   id 编号(w-s1-/w-s2- 前缀)、unit、stage 由脚本推导,保证 content.test.ts 的顺序契约。
 //   各 stage 的 term 不得重复(跨年词库为累积制,tests/content.test.ts 卡口)。
+//
+// ── 短语库 TSV(每分组一个文件 p01.tsv…;文件名即 unit;stage 目录即年级)──
+//   首行 `# group\t动词短语` 写分组名(一个文件一次,UI 按分组折叠展示);
+//   其余每行 7 列:phrase  meaning  level  example_en  example_zh  tags(| 分隔)  words(| 分隔)
+//   words = 短语核心词(必须 ⊆ 对应 stage 的累积词库 term,构建期强校验——
+//   「短语板块按三年词库补充」的内容卡口);id(ph-s1- 前缀)、unit、stage 由脚本推导。
+//   短语全局不得重复;stage 难度约定:stage1=A1/A2、stage2=A2/B1、stage3=B1/B2。
 //
 // ── 语法课程 TSV(每课一个文件,如 g-101.tsv;文件名即课程 id;stage 目录即年级)──
 //   `#` 开头是课程元信息(只写一次):
@@ -74,6 +82,12 @@ const VOCAB_SPECS = [
   { stage: 2, dir: join(SCRIPT_DIR, "vocab", "stage2"), prefix: "w-s2-" },
   { stage: 3, dir: join(SCRIPT_DIR, "vocab", "stage3"), prefix: "w-s3-" },
 ];
+// 短语按年级分目录;难度对齐各学年(A1/A2 → A2/B1 → B1/B2)
+const PHRASE_SPECS = [
+  { stage: 1, dir: join(SCRIPT_DIR, "phrases", "stage1"), prefix: "ph-s1-" },
+  { stage: 2, dir: join(SCRIPT_DIR, "phrases", "stage2"), prefix: "ph-s2-" },
+  { stage: 3, dir: join(SCRIPT_DIR, "phrases", "stage3"), prefix: "ph-s3-" },
+];
 // 语法按年级分目录,合并分片输出到 public/data/grammar/(index + part-XX)
 const GRAMMAR_SPECS = [
   { stage: 1, dir: join(SCRIPT_DIR, "grammar", "stage1") },
@@ -94,6 +108,7 @@ const LISTENING_SPECS = [
 const QUESTIONS_PER_LESSON = 6;
 const LEVELS = new Set(["A1", "A2", "B1", "B2"]);
 const VOCAB_COLUMNS = ["term", "phonetic", "meaning", "level", "example_en", "example_zh", "tags"];
+const PHRASE_COLUMNS = ["phrase", "meaning", "level", "example_en", "example_zh", "tags", "words"];
 
 // ── 海量内容分片(ARCHITECTURE.md §11:public/data 单文件 ≤ 500KB,构建目标 450KB 留余量)──
 const MAX_PART_BYTES = 450 * 1024;
@@ -185,18 +200,17 @@ async function writeChunked(jsonDir, items, metaOf, label, chunkMaxItems = CONTE
 }
 
 /**
- * 词库分片:manifest.json({total, parts})+ part-XX.json。
- * 词库没有列表页 meta(整 stage 顺序全量加载),只需要一个清单头。
+ * 词库式分片:manifest.json({total, parts})+ part-XX.json。
+ * 词库/短语没有列表页 meta(整 stage 顺序全量加载),只需要一个清单头。
  */
-async function writeVocabSharded(stage, words) {
-  const dir = join(PROJECT_ROOT, "public", "data", "vocab", `stage${stage}`);
-  await resetDir(dir);
-  const chunks = chunkBy(words, VOCAB_CHUNK_MAX_ITEMS);
-  await writeFile(join(dir, "manifest.json"), `{\n  "total": ${words.length},\n  "parts": ${chunks.length}\n}\n`, "utf-8");
+async function writeSharded(kindDir, label, items, chunkMaxItems) {
+  await resetDir(kindDir);
+  const chunks = chunkBy(items, chunkMaxItems);
+  await writeFile(join(kindDir, "manifest.json"), `{\n  "total": ${items.length},\n  "parts": ${chunks.length}\n}\n`, "utf-8");
   for (let p = 0; p < chunks.length; p++) {
-    await writeFile(join(dir, `part-${String(p + 1).padStart(2, "0")}.json`), serializeJson(chunks[p]), "utf-8");
+    await writeFile(join(kindDir, `part-${String(p + 1).padStart(2, "0")}.json`), serializeJson(chunks[p]), "utf-8");
   }
-  console.log(`✓ 词库 stage${stage} ${words.length} 词 → ${relative(PROJECT_ROOT, dir)}(manifest + ${chunks.length} 片)`);
+  console.log(`✓ ${label} ${items.length} 条 → ${relative(PROJECT_ROOT, kindDir)}(manifest + ${chunks.length} 片)`);
 }
 
 // 镜像自 app/lib/api/schemas.ts
@@ -210,6 +224,18 @@ const WordSchema = z.object({
   unit: z.string(),
   examples: z.array(z.object({ en: z.string(), zh: z.string() })),
   tags: z.array(z.string()),
+});
+const PhraseSchema = z.object({
+  id: z.string().min(1),
+  phrase: z.string().min(1),
+  meaning: z.string().min(1),
+  level: z.enum(["A1", "A2", "B1", "B2"]),
+  stage: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+  unit: z.string(),
+  group: z.string().min(1),
+  example: z.object({ en: z.string(), zh: z.string() }),
+  tags: z.array(z.string()),
+  words: z.array(z.string()).min(1),
 });
 const LessonSchema = z.object({
   id: z.string().min(1),
@@ -323,6 +349,8 @@ function parseVocabRow(line, file, no) {
 async function buildVocab() {
   // 跨 stage 查重:三年词库为累积制(0→3,000→6,000→10,000),term 全局唯一
   const seen = new Map();
+  // 累积词库 term 集(小写):短语库构建复用,校验 words ⊆ 对应 stage 累积词库
+  const cumulativeTerms = new Set();
   // 整目录重建:清掉旧布局的 vocab/stageN.json 单文件与可能的残留分片
   await rm(join(PROJECT_ROOT, "public", "data", "vocab"), { recursive: true, force: true });
   for (const spec of VOCAB_SPECS) {
@@ -364,11 +392,94 @@ async function buildVocab() {
         fail(`term 重复:${w.term}(stage${spec.stage} ${w.unit} 与 ${seen.get(key)})`);
       }
       seen.set(key, `stage${spec.stage} ${w.unit}`);
+      cumulativeTerms.add(key);
     }
     zodCheck(z.array(WordSchema), words, `词库 stage${spec.stage}`);
-    await writeVocabSharded(spec.stage, words);
+    await writeSharded(
+      join(PROJECT_ROOT, "public", "data", "vocab", `stage${spec.stage}`),
+      `词库 stage${spec.stage}`,
+      words,
+      VOCAB_CHUNK_MAX_ITEMS,
+    );
   }
   if (seen.size === 0) fail(`没有任何词库 TSV(${VOCAB_SPECS.map((s) => s.dir).join(", ")})`);
+  return cumulativeTerms;
+}
+
+// ── 短语库 ─────────────────────────────────────────────────────────────
+
+function parsePhraseRow(line, file, no) {
+  const cells = line.split("\t");
+  if (cells.length !== PHRASE_COLUMNS.length) {
+    fail(`${file}:${no} 需要 ${PHRASE_COLUMNS.length} 列,实际 ${cells.length} 列`);
+  }
+  const row = Object.fromEntries(PHRASE_COLUMNS.map((c, i) => [c, cells[i].trim()]));
+  for (const c of PHRASE_COLUMNS) {
+    if (row[c].length === 0) fail(`${file}:${no} 列 ${c} 为空`);
+  }
+  checkLevel(row.level, `${file}:${no}`);
+  return row;
+}
+
+async function buildPhrases(vocabTerms) {
+  const seen = new Set();
+  await rm(join(PROJECT_ROOT, "public", "data", "phrases"), { recursive: true, force: true });
+  for (const spec of PHRASE_SPECS) {
+    const files = await listTsvIfAny(spec.dir);
+    if (files.length === 0) {
+      console.log(`· 短语 stage${spec.stage} 目录暂缺,跳过`);
+      continue;
+    }
+    const phrases = [];
+    for (const file of files.sort()) {
+      const unit = file.replace(/\.tsv$/, "");
+      if (!/^p\d{2,3}$/.test(unit)) fail(`文件名 ${file} 应形如 p01.tsv(与 unit 字段一致)`);
+      const lines = (await readFile(join(spec.dir, file), "utf-8"))
+        .split("\n")
+        .map((l) => l.trimEnd())
+        .filter((l) => l.length > 0);
+      const groupCell = lines[0]?.startsWith("# group\t") ? lines[0] : null;
+      if (!groupCell) fail(`${file} 首行缺少 # group 指令`);
+      const group = groupCell.slice("# group\t".length).trim();
+      if (!group) fail(`${file} # group 分组名为空`);
+      for (const line of lines.slice(1)) {
+        if (line.startsWith("#")) fail(`${file} 未知指令行:${line}`);
+        const row = parsePhraseRow(line, file, lines.indexOf(line) + 1);
+        const words = row.words.split("|").map((w) => w.trim()).filter(Boolean);
+        if (words.length === 0) fail(`${file} ${row.phrase} words 列为空`);
+        // 「短语按三年词库补充」的内容卡口:核心词必须都在累积词库里
+        const missing = words.filter((w) => !vocabTerms.has(w.toLowerCase()));
+        if (missing.length > 0) {
+          fail(`${file} ${row.phrase} 的核心词不在累积词库:${missing.join(", ")}`);
+        }
+        phrases.push({
+          id: `${spec.prefix}${String(phrases.length + 1).padStart(3, "0")}`,
+          phrase: row.phrase,
+          meaning: row.meaning,
+          level: row.level,
+          stage: spec.stage,
+          unit,
+          group,
+          example: { en: row.example_en, zh: row.example_zh },
+          tags: row.tags.split("|").map((t) => t.trim()).filter(Boolean),
+          words,
+        });
+      }
+    }
+    for (const p of phrases) {
+      const key = p.phrase.toLowerCase();
+      if (seen.has(key)) fail(`短语重复:${p.phrase}(stage${p.stage} ${p.unit})`);
+      seen.add(key);
+    }
+    zodCheck(z.array(PhraseSchema), phrases, `短语 stage${spec.stage}`);
+    await writeSharded(
+      join(PROJECT_ROOT, "public", "data", "phrases", `stage${spec.stage}`),
+      `短语 stage${spec.stage}`,
+      phrases,
+      VOCAB_CHUNK_MAX_ITEMS,
+    );
+  }
+  if (seen.size === 0) fail(`没有任何短语 TSV(${PHRASE_SPECS.map((s) => s.dir).join(", ")})`);
 }
 
 async function importVocab(json) {
@@ -777,9 +888,11 @@ if (importArg !== -1) {
   const first = Array.isArray(json) ? json[0] : undefined;
   if (first && "paragraphs" in first) await importReading(json);
   else if (first && "questions" in first) await importGrammar(json);
+  else if (first && "phrase" in first) fail("--import 暂不支持短语库(编辑 scripts/build-content/phrases/ 的 TSV)");
   else await importVocab(json);
 } else {
-  await buildVocab();
+  const vocabTerms = await buildVocab();
+  await buildPhrases(vocabTerms);
   await buildGrammar();
   await buildReading();
   await buildListening();

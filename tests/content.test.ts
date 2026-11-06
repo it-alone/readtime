@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   GrammarLessonSchema,
   ListeningItemSchema,
+  PhraseItemSchema,
   ReadingArticleSchema,
   VocabWordSchema,
 } from "~/lib/api/schemas";
@@ -79,9 +80,24 @@ function loadVocabStage(stage: 1 | 2 | 3): unknown[] {
   return words;
 }
 
+/** 载入短语库某 stage:manifest.json + 全部 part-XX.json 顺序合并(布局与词库一致) */
+function loadPhrasesStage(stage: 1 | 2 | 3): unknown[] {
+  const dir = `../public/data/phrases/stage${stage}`;
+  const manifest = loadJson(`${dir}/manifest.json`) as { total: number; parts: number };
+  const items: unknown[] = [];
+  for (let p = 1; p <= manifest.parts; p++) {
+    items.push(...(loadJson(`${dir}/${partFile(p)}`) as unknown[]));
+  }
+  expect(items.length, `短语 stage${stage} manifest.total 应与合并条目数一致`).toBe(manifest.total);
+  return items;
+}
+
 const stage1 = loadVocabStage(1);
 const stage2 = loadVocabStage(2);
 const stage3 = loadVocabStage(3);
+const phrases1 = loadPhrasesStage(1);
+const phrases2 = loadPhrasesStage(2);
+const phrases3 = loadPhrasesStage(3);
 const grammar = loadChunked<ChunkMeta, ReturnType<typeof GrammarLessonSchema.parse>>(
   "../public/data/grammar",
   "语法",
@@ -199,6 +215,76 @@ describe("词库内容契约", () => {
       expect(w.examples[0].en.trim().length).toBeGreaterThan(0);
       expect(w.examples[0].zh.trim().length).toBeGreaterThan(0);
       expect(w.phonetic.trim().length).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("短语库内容契约(三年词库配套短语)", () => {
+  it("各 stage(manifest + part 分片)通过 PhraseItemSchema 校验且达到规模目标(每年 ≥ 150 条)", () => {
+    for (const [items, stage] of [
+      [phrases1, 1],
+      [phrases2, 2],
+      [phrases3, 3],
+    ] as const) {
+      const parsed = PhraseItemSchema.array().parse(items);
+      expect(parsed.length, `短语 stage${stage} 规模`).toBeGreaterThanOrEqual(150);
+    }
+  });
+
+  it("id 以 ph-s{N}- 前缀连续编号且全局唯一,stage 恒与目录一致", () => {
+    const all = [phrases1, phrases2, phrases3].flat();
+    const parsed = PhraseItemSchema.array().parse(all);
+    expect(new Set(parsed.map((p) => p.id)).size).toBe(parsed.length);
+    for (const [items, stage] of [
+      [phrases1, 1],
+      [phrases2, 2],
+      [phrases3, 3],
+    ] as const) {
+      PhraseItemSchema.array().parse(items).forEach((p, i) => {
+        expect(p.id).toBe(`ph-s${stage}-${String(i + 1).padStart(3, "0")}`);
+        expect(p.stage).toBe(stage);
+      });
+    }
+  });
+
+  it("短语文本跨 stage 全局唯一,分组/单元非空", () => {
+    const all = PhraseItemSchema.array().parse([phrases1, phrases2, phrases3].flat());
+    expect(new Set(all.map((p) => p.phrase.toLowerCase())).size).toBe(all.length);
+    for (const p of all) {
+      expect(p.group.trim().length, `${p.id} group 非空`).toBeGreaterThan(0);
+      expect(p.unit.trim().length, `${p.id} unit 非空`).toBeGreaterThan(0);
+    }
+  });
+
+  it("核心词非空且 ⊆ 对应学年累积词库(短语按三年词库配套的硬卡口)", () => {
+    const cumulative = new Map<number, Set<string>>();
+    for (const stage of [1, 2, 3] as const) {
+      cumulative.set(
+        stage,
+        new Set(
+          ([1, 2, 3] as const)
+            .slice(0, stage)
+            .flatMap((s) => VocabWordSchema.array().parse(loadVocabStage(s)).map((w) => w.term.toLowerCase())),
+        ),
+      );
+    }
+    const all = PhraseItemSchema.array().parse([phrases1, phrases2, phrases3].flat());
+    const missing: string[] = [];
+    for (const p of all) {
+      expect(p.words.length, `${p.id} words 非空`).toBeGreaterThan(0);
+      for (const w of p.words) {
+        if (!cumulative.get(p.stage)!.has(w.toLowerCase())) missing.push(`${p.id}:${w}`);
+      }
+    }
+    expect(missing, `不在累积词库中的核心词: ${missing.join(", ")}`).toEqual([]);
+  });
+
+  it("每条短语有中英例句与中文释义", () => {
+    const all = PhraseItemSchema.array().parse([phrases1, phrases2, phrases3].flat());
+    for (const p of all) {
+      expect(p.example.en.trim().length, `${p.id} 英文例句非空`).toBeGreaterThan(0);
+      expect(p.example.zh.trim().length, `${p.id} 中文例句非空`).toBeGreaterThan(0);
+      expect(p.meaning.trim().length, `${p.id} 释义非空`).toBeGreaterThan(0);
     }
   });
 });

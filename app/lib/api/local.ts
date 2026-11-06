@@ -44,6 +44,7 @@ import type {
   ItemResult,
   LearningSession,
   ListeningItem,
+  PhraseItem,
   Progress as ProgressType,
   ReadingArticle,
   ReviewState,
@@ -179,6 +180,11 @@ export interface PronItemResult {
   elapsedMs: number;
 }
 
+/** 短语库浏览(只读内容板块,不写学习数据;按 stage 懒加载) */
+export interface PhraseService {
+  listStagePhrases(stage: Stage): Promise<PhraseItem[]>;
+}
+
 export interface PronService {
   /** 跟读任务:已学词例句 + 已读文章整句(词库为空时退回词库开头),每日种子稳定 */
   buildDrill(now?: Date): Promise<{ items: PronDrillItem[]; rate: number }>;
@@ -216,6 +222,7 @@ export interface Services {
   reading: ReadingService;
   listening: ListeningLibraryService;
   pron: PronService;
+  phrases: PhraseService;
   progress: ProgressRepository;
   settings: SettingsRepository;
   logs: DailyLogRepository;
@@ -764,12 +771,19 @@ function createLocalServices(): Services {
     },
   };
 
+  const phrases: PhraseService = {
+    async listStagePhrases(stage) {
+      return content.loadPhrases(stage);
+    },
+  };
+
   return {
     vocab,
     grammar,
     reading,
     listening,
     pron,
+    phrases,
     progress: progressRepo,
     settings: settingsRepo,
     logs,

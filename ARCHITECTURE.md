@@ -133,6 +133,7 @@
 | --- | --- | --- | --- |
 | `_index.tsx` | `/` | 今日任务台(打卡、连胜、任务入口) | Progress + DailyLog |
 | `words.tsx` | `/words` | 词库浏览(三年 10,000 词,按 unit 折叠 + 搜索 + 级别筛选 + 发音) | ContentRepo(静态,按 stage 懒加载) |
+| `phrases.tsx` | `/phrases` | 短语库浏览(三年 478 条,按分组折叠 + 搜索 + 级别筛选 + TTS 发音,核心词 ⊆ 累积词库) | ContentRepo(静态,按 stage 懒加载) |
 | `learn.vocab.tsx` | `/learn/vocab` | 词汇学习会话(新词+复习混合) | ReviewRepo + ContentRepo |
 | `learn.grammar._index.tsx` / `learn.grammar.$lessonId.tsx` | `/learn/grammar(/:id)` | 语法课列表 / 微课+练习 | ContentRepo(静态) |
 | `learn.listening._index.tsx` | `/learn/listening` | 听力选择页(今日听写入口 + 精听素材库) | ContentRepo + VocabService |
@@ -359,6 +360,7 @@ public/data/
 ├── vocab/stage1/          # 第一年 3000 词(99 主题单元,u01–u99)= manifest.json + part-01..02
 ├── vocab/stage2/          # 第二年 3000 词(100 主题单元,u01–u100:通用主题 + 8 大场景)= manifest + 2 片
 ├── vocab/stage3/          # 第三年 4000 词(135 单元,u01–u135:AWL 学术词 + 主题/场景单元,全局 term 零重复)= manifest + 3 片
+├── phrases/stage{1,2,3}/  # 三年词库配套短语 478 条(159/159/160;4 分组:动词/介词/习惯/场景;核心词强校验 ⊆ 累积词库)= manifest + 各 1 片
 ├── grammar/               # 3,426 课 = 每 stage 1,142 课;part 28 片 + 索引拆 7 片
 │   ├── index.json         #   { total, parts, indexParts, items:[{id,title,summary,level,stage,questionCount,part}] } 列表页只拉这个
 │   ├── index-part-XX.json #   索引 meta 过大时的分片(indexParts > 1 时 index.items 为空)
@@ -371,13 +373,13 @@ public/data/
 public/audio/              # 预生成 m4a:vocab/{id|-ex}.m4a、reading/{article}/s{n}.m4a、listening/{item}/s{n}.m4a
 ```
 
-语法/阅读/听力内容量大(全量 JSON 25MB+),构建期按 id 数字序分片,单文件卡 §11 预算(构建目标 450KB、上限 500KB:字节优先、语法/阅读/听力 200 条封顶;索引 meta 过大再拆 index-part-XX):列表页只加载 index.json 轻量索引(带 questionCount 等展示字段),详情页经 `ContentRepository.getGrammarLesson/getReadingArticle/getListeningItem` 只取所在分片;发音跟读的"回原文"按已读文章 id 反查分片(`getReadingArticlesByIds`),不整库加载。词库无列表页 meta,按 stage 拆成 manifest.json({total,parts})+ part-XX.json 顺序整段加载。批量内容由 `scripts/generate-bulk/` 生成(模板 + 槽位库填充、词库例句嵌入、append-only 编号),手写 TSV 与生成 TSV 同一管线构建。
+语法/阅读/听力内容量大(全量 JSON 25MB+),构建期按 id 数字序分片,单文件卡 §11 预算(构建目标 450KB、上限 500KB:字节优先、语法/阅读/听力 200 条封顶;索引 meta 过大再拆 index-part-XX):列表页只加载 index.json 轻量索引(带 questionCount 等展示字段),详情页经 `ContentRepository.getGrammarLesson/getReadingArticle/getListeningItem` 只取所在分片;发音跟读的"回原文"按已读文章 id 反查分片(`getReadingArticlesByIds`),不整库加载。词库与短语库无列表页 meta,按 stage 拆成 manifest.json({total,parts})+ part-XX.json 顺序整段加载(短语走 `ContentRepository.loadPhrases`)。批量内容由 `scripts/generate-bulk/` 生成(模板 + 槽位库填充、词库例句嵌入、append-only 编号),手写 TSV 与生成 TSV 同一管线构建;短语由 `scripts/generate-bulk/gen_phrases.py`(框架源 `phrase_frames.py`)按三年累积词库筛选生成,每条短语的核心词(words)必须命中对应学年累积词库,否则构建失败。
 
-运行时按 stage 懒加载 fetch + 内存缓存(`ContentRepository`,fetch+解析+zod 校验在内容 Worker 后台线程执行、Worker 不可用时回退主线程),避免 10k 词打包进 JS、MB 级 JSON 不卡主线程。所有 JSON 经 zod schema 校验后才进入领域层。静态内容与音频的离线缓存归 Cache API(Service Worker,已启用:导航 network-first 回退缓存壳、`/assets/*` 构建时全量预缓存(`scripts/patch-sw-assets.mjs` 在 `npm run build` 末尾把带哈希的资源清单注入 `build/client/sw.js`,保证未访问过的路由离线也有 chunk)、词库全部分片 + 各模块 index/index-part 安装时预缓存、`/data/*` stale-while-revalidate(缓存命中先回页面零等待,后台静默更新、下次加载生效,兼顾离线回退)、`/audio/*` cache-first 听过即缓存),与 IndexedDB 的领域数据存储分工明确。
+运行时按 stage 懒加载 fetch + 内存缓存(`ContentRepository`,fetch+解析+zod 校验在内容 Worker 后台线程执行、Worker 不可用时回退主线程),避免 10k 词打包进 JS、MB 级 JSON 不卡主线程。所有 JSON 经 zod schema 校验后才进入领域层。静态内容与音频的离线缓存归 Cache API(Service Worker,已启用:导航 network-first 回退缓存壳、`/assets/*` 构建时全量预缓存(`scripts/patch-sw-assets.mjs` 在 `npm run build` 末尾把带哈希的资源清单注入 `build/client/sw.js`,保证未访问过的路由离线也有 chunk)、词库/短语库全部分片 + 各模块 index/index-part 安装时预缓存、`/data/*` stale-while-revalidate(缓存命中先回页面零等待,后台静默更新、下次加载生效,兼顾离线回退)、`/audio/*` cache-first 听过即缓存),与 IndexedDB 的领域数据存储分工明确。
 
 **语音两层的策略(`app/lib/speech.ts`):** 单词/例句/跟读句/精听句一律优先播预生成音频包(macOS 神经语音 Reed,`npm run audio:gen` 增量重产,`scripts/generate-audio.mjs` 复刻 pron 句索引规则 `pi*100+si` 保证与训练页同一 URL;听力素材句为 `listening/{itemId}/s{1起句序}.m4a`),音频缺失或加载失败时回退 Web Speech TTS——回退侧精选清晰发音人(优先 Google/Microsoft/Reed 系,正则排除 Fred/Zarvox 等系统搞怪音色),倍速经 `playbackRate`/`utterance.rate` 透传。
 
-内容的单一编辑源是 `scripts/build-content/` 下的 TSV:`vocab/stage{1,2,3}/*.tsv`(每单元一个文件,每词一行)、`grammar/stage{1,2,3}/*.tsv`(每课一个文件,`#` 指令行写课程元信息,其余每行一题)、`reading/{l2,l3}/*.tsv`(每篇一个文件,`# para`/`# glossary` 写正文与词汇表,题目行同语法)与 `listening/{l1,l2}/*.tsv`(每篇一个文件,`# s` 指令写逐句双语,题目行同语法,合并产出 `public/data/listening/` 分片)。`npm run build:content` 生成 `public/data/` 下的 JSON 并做结构校验(列完整、level 枚举、term 查重、id 顺序、每课 6 题、每篇 3–8 题、听力 3–10 句/3–5 题、选项唯一、wordCount 自动统计),`tests/content.test.ts` 对生成 JSON 做 zod 契约卡口。生成物不要手改;`--import` 可把旧 JSON 反向迁出成 TSV。
+内容的单一编辑源是 `scripts/build-content/` 下的 TSV:`vocab/stage{1,2,3}/*.tsv`(每单元一个文件,每词一行)、`grammar/stage{1,2,3}/*.tsv`(每课一个文件,`#` 指令行写课程元信息,其余每行一题)、`reading/{l2,l3}/*.tsv`(每篇一个文件,`# para`/`# glossary` 写正文与词汇表,题目行同语法)与 `listening/{l1,l2}/*.tsv`(每篇一个文件,`# s` 指令写逐句双语,题目行同语法,合并产出 `public/data/listening/` 分片)、以及 `phrases/stage{1,2,3}/p01..p04.tsv`(每组一个文件,首行 `# group\t<组名>` 指令写分组,其余每行一短语,7 列:phrase/meaning/level/example_en/example_zh/tags/words,tags 与 words 以 `|` 分隔)。`npm run build:content` 生成 `public/data/` 下的 JSON 并做结构校验(列完整、level 枚举、term 查重、id 顺序、每课 6 题、每篇 3–8 题、听力 3–10 句/3–5 题、选项唯一、wordCount 自动统计),`tests/content.test.ts` 对生成 JSON 做 zod 契约卡口。生成物不要手改;`--import` 可把旧 JSON 反向迁出成 TSV。
 
 ### 7.2 本地持久化(IndexedDB 唯一本地存储)
 

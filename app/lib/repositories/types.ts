@@ -4,6 +4,7 @@ import type {
   GrammarLesson,
   LearningSession,
   ListeningItem,
+  PhraseItem,
   Progress,
   ReadingArticle,
   ReviewState,
@@ -97,6 +98,8 @@ export interface ListeningItemMeta {
  */
 export interface ContentRepository {
   loadStage(stage: Stage): Promise<VocabWord[]>;
+  /** 短语库整 stage 加载(按三年词库配套,manifest + part-XX 顺序合并) */
+  loadPhrases(stage: Stage): Promise<PhraseItem[]>;
   /** 语法课程全量索引(按 id 数字序) */
   loadGrammarIndex(): Promise<GrammarLessonMeta[]>;
   getGrammarLesson(id: string): Promise<GrammarLesson | undefined>;

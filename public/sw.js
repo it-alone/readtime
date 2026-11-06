@@ -1,14 +1,14 @@
 // readTime service worker(阶段 0 纯前端离线化,见 README"技术栈"):
 //   导航请求 network-first → 断网回退缓存的 SPA shell;
 //   /assets/*(带 hash 的构建产物)构建时全量预缓存(含未访问路由的 chunk),cache-first;
-//   /data/*.json(词库/语法/阅读/听力)stale-while-revalidate:缓存命中先回页面
+//   /data/*.json(词库/短语/语法/阅读/听力)stale-while-revalidate:缓存命中先回页面
 //   (MB 级内容零等待、加载不卡点击),后台静默更新缓存,联网更新的内容下次加载生效。
 // IndexedDB 学习数据不经 SW,天然离线。
 //
 // 部署基路径从注册 scope 推导(根路径部署 → "/",GitHub Pages 项目站点 → "/readtime/"),
 // 所有预缓存 URL 与路径匹配统一挂在 BASE 下,两种部署共用同一份 sw.js。
 
-const VERSION = "v11";
+const VERSION = "v12";
 const BASE = new URL(self.registration.scope).pathname; // 末尾带 /
 const under = (path) => `${BASE}${path.replace(/^\//, "")}`;
 const SHELL_CACHE = `readtime-shell-${VERSION}`;
@@ -22,7 +22,7 @@ const SHELL_URLS = [
   under("icons/icon-512.png"),
   under("icons/apple-touch-icon.png"),
 ];
-// 内容包预缓存:词库全部分片(每日任务依赖)+ 各模块 index(列表页依赖)。
+// 内容包预缓存:词库 + 短语库全部分片(每日任务/浏览页依赖,短语总量小)+ 各模块 index(列表页依赖)。
 // 词库/索引也可能分片(单文件 ≤ 500KB 性能预算),URL 清单由 scripts/patch-sw-assets.mjs
 // 构建时扫描 public/data 动态注入,新增分片无需手改本文件。
 // 语法/阅读/听力正文 part-XX.json(全量 25MB+,不宜预缓存)不在此列:

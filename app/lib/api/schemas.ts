@@ -18,6 +18,19 @@ export const VocabWordSchema = z.object({
   tags: z.array(z.string()),
 });
 
+export const PhraseItemSchema = z.object({
+  id: z.string().min(1),
+  phrase: z.string().min(1),
+  meaning: z.string().min(1),
+  level: CefrSchema,
+  stage: StageSchema,
+  unit: z.string(),
+  group: z.string().min(1),
+  example: z.object({ en: z.string(), zh: z.string() }),
+  tags: z.array(z.string()),
+  words: z.array(z.string()).min(1),
+});
+
 export const GrammarLessonSchema = z.object({
   id: z.string().min(1),
   title: z.string().min(1),

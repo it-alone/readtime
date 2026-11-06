@@ -68,6 +68,17 @@ export function MicIcon(props: IconProps) {
   );
 }
 
+/** 短语库:对话气泡 */
+export function ChatIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.2 0-2.4-.25-3.4-.7L4 21l1.7-4.3A8.5 8.5 0 1 1 21 11.5z" />
+      <path d="M8.5 10h7" />
+      <path d="M8.5 13.5h4.5" />
+    </Svg>
+  );
+}
+
 /** 词库浏览:文件夹 */
 export function FolderIcon(props: IconProps) {
   return (

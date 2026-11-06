@@ -4,7 +4,7 @@ import type {
   ListeningItemMeta,
   ReadingArticleMeta,
 } from "~/lib/repositories/types";
-import type { GrammarLesson, ListeningItem, ReadingArticle, Stage, VocabWord } from "~/models/types";
+import type { GrammarLesson, ListeningItem, PhraseItem, ReadingArticle, Stage, VocabWord } from "~/models/types";
 import { type ContentKind, type IndexShape } from "./content-schemas";
 import { fetchParsed } from "./content-worker-client";
 
@@ -29,6 +29,7 @@ function readingStageOf(id: string): 2 | 3 | undefined {
 
 export class StaticContentRepository implements ContentRepository {
   private vocabCache = new Map<Stage, VocabWord[]>();
+  private phraseCache = new Map<Stage, PhraseItem[]>();
   private grammarIndex: GrammarLessonMeta[] | null = null;
   private grammarParts = new Map<number, GrammarLesson[]>();
   private readingIndexes = new Map<2 | 3, ReadingArticleMeta[]>();
@@ -49,6 +50,21 @@ export class StaticContentRepository implements ContentRepository {
     const words = parts.flat();
     this.vocabCache.set(stage, words);
     return words;
+  }
+
+  async loadPhrases(stage: Stage): Promise<PhraseItem[]> {
+    const hit = this.phraseCache.get(stage);
+    if (hit) return hit;
+    const dir = `${DATA_BASE}phrases/stage${stage}`;
+    const manifest = await fetchParsed(`${dir}/manifest.json`, "phraseManifest", `短语库清单(stage${stage})`);
+    const parts = await Promise.all(
+      Array.from({ length: manifest.parts }, (_, i) =>
+        fetchParsed(`${dir}/${partFile(i + 1)}`, "phraseItems", `短语库(stage${stage})`),
+      ),
+    );
+    const phrases = parts.flat();
+    this.phraseCache.set(stage, phrases);
+    return phrases;
   }
 
   /** 加载分片索引:index.json 内联 items 时直接用,否则并行拉全部 index-part-XX.json */

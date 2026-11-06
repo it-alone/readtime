@@ -1,0 +1,31 @@
+# group	场景搭配
+school gate	学校大门	A1	We meet at the school gate.	我们在学校大门碰面。	campus	school|gate
+school bus	校车	A1	The school bus comes at seven.	校车七点来。	campus|travel	school|bus
+English class	英语课	A1	We have an English class on Tuesday.	我们周二有英语课。	campus	english|class
+basketball game	篮球赛	A1	There is a basketball game after school.	放学后有一场篮球赛。	sports|campus	basketball|game
+school trip	学校郊游	A2	The school trip is in spring.	学校郊游在春天。	campus|nature	school|trip
+birthday party	生日聚会	A1	I go to her birthday party.	我去参加她的生日聚会。	family|social	birthday|party
+bus stop	公交车站	A1	He waits at the bus stop.	他在公交车站等车。	travel	bus|stop
+train station	火车站	A1	The train station is near here.	火车站在附近。	travel	train|station
+on holiday	在度假	A2	My family are on holiday in Sanya.	我们全家在三亚度假。	travel|family	holiday
+summer vacation	暑假	A2	I read five books in the summer vacation.	暑假我读了五本书。	campus|time	summer|vacation
+fast food	快餐	A1	Fast food is not very healthy.	快餐不太健康。	food|health	fast|food
+a cup of	一杯	A1	I would like a cup of coffee.	我想要一杯咖啡。	food	cup
+a glass of	一(玻璃)杯	A1	She drinks a glass of milk every morning.	她每天早上喝一杯牛奶。	food|health	glass
+a bottle of	一瓶	A1	Buy a bottle of water for me.	帮我买一瓶水。	food|shopping	bottle
+how much	多少钱	A1	How much is this T-shirt?	这件 T 恤多少钱?	shopping	how|much
+on sale	打折出售	A2	These shoes are on sale today.	这些鞋今天打折。	shopping	sale
+shopping list	购物清单	A1	Mom writes a shopping list.	妈妈写购物清单。	shopping|home	shopping|list
+try on	试穿	A1	Can I try on the dress?	我能试穿这条连衣裙吗?	shopping	try
+pay for	付款	A1	Dad pays for the dinner.	爸爸付晚饭的钱。	food|shopping	pay
+go for a walk	去散步	A1	We go for a walk after dinner.	晚饭后我们去散步。	health|home	go|walk
+do the dishes	洗碗	A1	I help Mom do the dishes.	我帮妈妈洗碗。	home|food	dish
+clean the room	打扫房间	A1	Please clean your room.	请打扫你的房间。	home	clean|room
+make the bed	整理床铺	A1	He makes the bed every morning.	他每天早上整理床铺。	home	make|bed
+have a cold	感冒	A1	Tom has a cold today.	汤姆今天感冒了。	health	have|cold
+see a doctor	看医生	A1	You should see a doctor.	你应该去看医生。	health|service	see|doctor
+take medicine	吃药	A1	Take the medicine after lunch.	午饭后吃药。	health	take|medicine
+do morning exercises	做早操	A1	We do morning exercises at eight.	我们八点做早操。	campus|sports	morning|exercise
+in class	在课堂上	A1	Don't eat in class.	课堂上不要吃东西。	campus	class
+after school	放学后	A1	I play football after school.	放学后我踢足球。	campus|sports	after|school
+on weekends	在周末	A1	We go to the park on weekends.	我们周末去公园。	social|nature	weekend

@@ -1,0 +1,50 @@
+# group	动词短语
+get up	起床	A1	I get up at seven every day.	我每天七点起床。	time|home	get
+go to bed	上床睡觉	A1	She goes to bed at nine.	她九点上床睡觉。	time|home	go|bed
+have breakfast	吃早饭	A1	We have breakfast together.	我们一起吃早饭。	food|home	have|breakfast
+have lunch	吃午饭	A1	They have lunch at school.	他们在学校吃午饭。	food|campus	have|lunch
+have dinner	吃晚饭	A1	The family have dinner at home.	这家人在家吃晚饭。	food|family	have|dinner
+go home	回家	A1	Let's go home now.	我们现在回家吧。	home	go|home
+go to school	去上学	A1	I go to school by bus.	我坐公交车上学。	campus|travel	go|school
+go to work	去上班	A1	Dad goes to work at eight.	爸爸八点去上班。	work	go|work
+do homework	做作业	A1	He does homework after dinner.	他晚饭后做作业。	campus|home	homework
+watch TV	看电视	A1	We watch TV in the evening.	我们晚上看电视。	home|media	watch|tv
+read books	读书	A1	She reads books every night.	她每晚读书。	campus|culture	read|book
+listen to music	听音乐	A1	I listen to music after class.	课后我听音乐。	media|campus	listen|music
+wash hands	洗手	A1	Please wash your hands before eating.	吃饭前请洗手。	health|home	wash|hand
+take a shower	洗澡	A1	He takes a shower every morning.	他每天早上洗澡。	home|health	take|shower
+have a rest	休息一下	A1	You can have a rest now.	你现在可以休息一下。	health	have|rest
+wake up	醒来	A1	I wake up early on Monday.	我周一醒得很早。	time|home	wake
+come in	进来	A1	Come in and sit down, please.	请进来坐。	social	come
+stand up	起立	A1	Please stand up and answer the question.	请起立回答问题。	campus	stand
+sit down	坐下	A1	Sit down, please.	请坐。	campus	sit
+open the door	开门	A1	Can you open the door for me?	你能帮我开门吗?	home	open|door
+close the window	关窗户	A1	Close the window, please.	请关上窗户。	home	close|window
+turn on	打开(电器)	A1	Please turn on the light.	请打开灯。	home|media	turn
+turn off	关掉(电器)	A1	Turn off the TV before bed.	睡前关掉电视。	home|media	turn
+put on	穿上	A1	Put on your coat; it is cold.	天冷了,穿上外套。	shopping	put
+take off	脱下;(飞机)起飞	A1	Take off your shoes here.	在这里脱掉鞋子。	home|travel	take
+get dressed	穿衣服	A1	The little boy can get dressed by himself.	小男孩能自己穿衣服。	family|home	get
+look at	看	A1	Look at the blackboard, please.	请看黑板。	campus	look
+wait for	等待	A1	We wait for the bus every day.	我们每天等公交车。	travel	wait
+talk to	与…交谈	A1	She talks to her teacher after class.	课后她和老师交谈。	campus|social	talk
+come on	赶快;加油	A1	Come on, we are late!	快点,我们迟到了!	social	come
+go shopping	去购物	A1	They go shopping on Saturday.	他们周六去购物。	shopping	go|shopping
+have a look	看一看	A1	Let me have a look at your photo.	让我看看你的照片。	social|media	have|look
+play with	和…一起玩	A1	The girl plays with her dog.	女孩和她的狗一起玩。	family|nature	play
+get to	到达	A2	We get to school at eight.	我们八点到校。	campus|travel	get
+come back	回来	A1	Dad comes back at six.	爸爸六点回来。	family|home	come|back
+go out	出去	A1	Let's go out for a walk.	我们出去散步吧。	health|home	go
+get on	上车	A1	Get on the bus quickly.	快上公交车。	travel	get
+get off	下车	A1	I get off at the next stop.	我在下一站下车。	travel	get
+pick up	捡起;接(人)	A1	Please pick up the pen for me.	请帮我捡起那支笔。	campus	pick
+hurry up	赶快	A1	Hurry up, or we will miss the bus!	快点,不然就赶不上公交车了!	travel	hurry
+be late for	迟到	A1	Don't be late for class.	上课不要迟到。	campus|time	late
+do sports	做运动	A1	I do sports after school.	放学后我做运动。	sports|health	sport
+make friends	交朋友	A1	It is easy to make friends here.	在这里交朋友很容易。	social|campus	make|friend
+have fun	玩得开心	A1	The children have fun in the park.	孩子们在公园里玩得开心。	social|nature	have|fun
+take photos	拍照	A1	She takes photos of the flowers.	她给花拍照。	media|nature	take|photo
+go swimming	去游泳	A1	They go swimming in summer.	他们夏天去游泳。	sports|health	go|swimming
+go to sleep	入睡	A1	The baby goes to sleep quickly.	宝宝很快就睡着了。	family|home	go|sleep
+help with	帮忙做…	A1	He helps his mother with housework.	他帮妈妈做家务。	family|home	help
+go fishing	去钓鱼	A1	We go fishing at the lake.	我们去湖边钓鱼。	sports|nature	go|fishing

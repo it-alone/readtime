@@ -1,7 +1,7 @@
 import { z } from "zod";
 // 注意:本模块会被 content-worker.ts 打进 Worker 子包,Vite 的 worker 构建不解析
 // tsconfig 的 ~/ 别名,依赖链里一律用相对路径引入
-import { GrammarLessonSchema, ListeningItemSchema, ReadingArticleSchema, VocabWordSchema } from "../api/schemas";
+import { GrammarLessonSchema, ListeningItemSchema, PhraseItemSchema, ReadingArticleSchema, VocabWordSchema } from "../api/schemas";
 
 // 静态内容 zod 契约注册表:主线程(content.ts)与内容 Worker(content-worker.ts)共用,
 // 每个 kind 对应一种 public/data JSON 文件形状;新增内容类型在此登记一处即可。
@@ -52,12 +52,14 @@ function indexSchema<T extends z.ZodTypeAny>(item: T) {
   });
 }
 
-/** 词库分片清单头(vocab/stageN/manifest.json) */
+/** 词库/短语库分片清单头(vocab|phrases/stageN/manifest.json) */
 const VocabManifestSchema = z.object({ total: z.number().int(), parts: z.number().int().positive() });
 
 export const CONTENT_SCHEMAS = {
   vocabManifest: VocabManifestSchema,
   vocabWords: z.array(VocabWordSchema),
+  phraseManifest: VocabManifestSchema,
+  phraseItems: z.array(PhraseItemSchema),
   grammarIndex: indexSchema(GrammarMetaSchema),
   grammarMetas: z.array(GrammarMetaSchema),
   grammarLessons: z.array(GrammarLessonSchema),
