@@ -127,32 +127,37 @@ export default function WordsBrowser() {
   }
 
   return (
-    <PageShell title="词库浏览">
+    <PageShell
+      title="词库浏览"
+      toolbar={
+        /* 年份切换:吸顶分段控制器——单元列表很长,滚到深处也能随时切学年 */
+        <div className="flex gap-1 rounded-2xl bg-slate-100/90 p-1">
+          {STAGE_TABS.map((t) => (
+            <button
+              key={t.stage}
+              type="button"
+              onClick={() => {
+                setStage(t.stage);
+                setOpenUnits(new Set());
+                setOpenWord(null);
+                // 切年后整张列表更换,回到顶部重新浏览
+                window.scrollTo({ top: 0, behavior: "instant" });
+              }}
+              className={`flex-1 rounded-xl py-2 text-sm font-semibold transition-all ${
+                stage === t.stage
+                  ? "bg-white text-emerald-700 shadow-sm"
+                  : "text-slate-500 hover:text-slate-700"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+      }
+    >
       <p className="text-xs leading-relaxed text-slate-400">
         三年全部 30,000 词(每年 10,000),按单元浏览,支持搜索、级别筛选与发音试听。
       </p>
-
-      {/* 年份切换:分段控制器 */}
-      <div className="flex gap-1 rounded-2xl bg-slate-100/90 p-1">
-        {STAGE_TABS.map((t) => (
-          <button
-            key={t.stage}
-            type="button"
-            onClick={() => {
-              setStage(t.stage);
-              setOpenUnits(new Set());
-              setOpenWord(null);
-            }}
-            className={`flex-1 rounded-xl py-2 text-sm font-semibold transition-all ${
-              stage === t.stage
-                ? "bg-white text-emerald-700 shadow-sm"
-                : "text-slate-500 hover:text-slate-700"
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
 
       {/* 搜索 + 级别筛选 */}
       <Card className="space-y-3 !p-3.5">

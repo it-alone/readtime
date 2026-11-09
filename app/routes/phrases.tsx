@@ -127,32 +127,37 @@ export default function PhrasesBrowser() {
   }
 
   return (
-    <PageShell title="短语库">
+    <PageShell
+      title="短语库"
+      toolbar={
+        /* 年份切换:吸顶分段控制器——分组列表很长,滚到深处也能随时切学年 */
+        <div className="flex gap-1 rounded-2xl bg-slate-100/90 p-1">
+          {STAGE_TABS.map((t) => (
+            <button
+              key={t.stage}
+              type="button"
+              onClick={() => {
+                setStage(t.stage);
+                setOpenGroups(new Set());
+                setOpenPhrase(null);
+                // 切年后整张列表更换,回到顶部重新浏览
+                window.scrollTo({ top: 0, behavior: "instant" });
+              }}
+              className={`flex-1 rounded-xl py-2 text-sm font-semibold transition-all ${
+                stage === t.stage
+                  ? "bg-white text-indigo-700 shadow-sm"
+                  : "text-slate-500 hover:text-slate-700"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+      }
+    >
       <p className="text-xs leading-relaxed text-slate-400">
         三年词库配套短语(共 1,000+ 条,覆盖日常口语、职场沟通、习语谚语等高频场景,核心词均出自对应学年词库),按分组浏览,支持搜索与级别筛选。
       </p>
-
-      {/* 年份切换:分段控制器 */}
-      <div className="flex gap-1 rounded-2xl bg-slate-100/90 p-1">
-        {STAGE_TABS.map((t) => (
-          <button
-            key={t.stage}
-            type="button"
-            onClick={() => {
-              setStage(t.stage);
-              setOpenGroups(new Set());
-              setOpenPhrase(null);
-            }}
-            className={`flex-1 rounded-xl py-2 text-sm font-semibold transition-all ${
-              stage === t.stage
-                ? "bg-white text-indigo-700 shadow-sm"
-                : "text-slate-500 hover:text-slate-700"
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
 
       {/* 搜索 + 级别筛选 */}
       <Card className="space-y-3 !p-3.5">

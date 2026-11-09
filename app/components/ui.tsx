@@ -296,10 +296,13 @@ export function SpeakButton({
 export function PageShell({
   title,
   back,
+  toolbar,
   children,
 }: {
   title: string;
   back?: string;
+  /** 吸顶工具行(如词库/短语库的年份切换器):长列表滚到深处也能直接切换 */
+  toolbar?: ReactNode;
   children: ReactNode;
 }) {
   return (
@@ -322,6 +325,7 @@ export function PageShell({
           ) : null}
           <h1 className="truncate text-lg font-bold tracking-tight text-slate-900">{title}</h1>
         </div>
+        {toolbar ? <div className="px-4 pb-3">{toolbar}</div> : null}
       </header>
       <div className="relative space-y-4 p-4 pb-tabbar animate-fade-up">{children}</div>
     </main>
