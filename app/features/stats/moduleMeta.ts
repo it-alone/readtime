@@ -9,4 +9,5 @@ export const MODULE_META: Record<SessionType, { icon: string; label: string; uni
   "listening-dictation": { icon: "🎧", label: "听力", unit: "题", tone: "bg-sky-50 text-sky-600 ring-sky-100" },
   "reading-quiz": { icon: "📚", label: "阅读", unit: "题", tone: "bg-amber-50 text-amber-600 ring-amber-100" },
   "pron-drill": { icon: "🎤", label: "发音", unit: "句", tone: "bg-rose-50 text-rose-600 ring-rose-100" },
+  "spelling-drill": { icon: "✏️", label: "拼写", unit: "词", tone: "bg-teal-50 text-teal-600 ring-teal-100" },
 };

@@ -2,7 +2,7 @@ import type { LearningSession, SessionType } from "~/models/types";
 
 // 模块训练汇总(周报,见 ARCHITECTURE.md §4.2 弱项诊断):
 // 近 N 天各学习模块的会话数/题数/正确率。grade>=3 视为正确,与留存率同口径。
-// 五个模块全部返回(没练过的为零值),供周报展示均衡度与"本周未练习"提示。
+// 各模块全部返回(没练过的为零值),供周报展示均衡度与"本周未练习"提示。
 
 export const MODULE_TYPES: SessionType[] = [
   "vocab",
@@ -10,6 +10,7 @@ export const MODULE_TYPES: SessionType[] = [
   "listening-dictation",
   "reading-quiz",
   "pron-drill",
+  "spelling-drill",
 ];
 
 export interface ModuleSummary {

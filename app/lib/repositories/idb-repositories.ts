@@ -7,6 +7,7 @@ import type {
   OutboxEntry,
   Progress,
   ReviewState,
+  SessionType,
   Settings,
 } from "~/models/types";
 import type {
@@ -140,6 +141,12 @@ export class IdbSessionRepository implements SessionRepository {
   async since(cutoff: string): Promise<LearningSession[]> {
     const db = await getDb();
     return db.getAllFromIndex("sessions", "by-startedAt", IDBKeyRange.lowerBound(cutoff));
+  }
+
+  async allOfType(type: SessionType): Promise<LearningSession[]> {
+    const db = await getDb();
+    const all = await db.getAllFromIndex("sessions", "by-startedAt");
+    return all.filter((s) => s.type === type);
   }
 }
 

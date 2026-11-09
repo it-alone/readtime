@@ -7,15 +7,16 @@ import {
   MicIcon,
   NewspaperIcon,
   BookOpenIcon,
+  PencilIcon,
 } from "~/components/icons";
 import { getServices } from "~/lib/api/local";
 import { todayStr } from "~/lib/gamify/streak";
 import { VOCAB_POINTER_END, type SessionType } from "~/models/types";
 
-// 练习中枢(底栏「练习」tab):词汇主线宽卡 + 四大模块磁贴 + 短语库入口。
+// 练习中枢(底栏「练习」tab):词汇主线宽卡 + 训练模块磁贴 + 短语库入口。
 // 首页只留今日任务主卡,模块导航集中在这里;完成态色相与各模块页一致。
 
-/** 模块速通入口;每个模块固定色相,全站一致 */
+/** 模块速通入口;每个模块固定色相,全站一致(wide=通栏横排磁贴) */
 const MODULE_ENTRIES: {
   type: SessionType;
   icon: (props: React.SVGProps<SVGSVGElement>) => ReactNode;
@@ -24,6 +25,7 @@ const MODULE_ENTRIES: {
   to: string;
   disc: string;
   ink: string;
+  wide?: boolean;
 }[] = [
   {
     type: "grammar-quiz",
@@ -60,6 +62,16 @@ const MODULE_ENTRIES: {
     to: "/learn/pron",
     disc: "bg-rose-100/80",
     ink: "text-rose-500",
+  },
+  {
+    type: "spelling-drill",
+    icon: PencilIcon,
+    label: "单词拼写",
+    desc: "已学词随机 30 词,拼错的词反复回归直至拼对",
+    to: "/learn/spelling",
+    disc: "bg-teal-100/80",
+    ink: "text-teal-600",
+    wide: true,
   },
 ];
 
@@ -124,8 +136,8 @@ export default function Practice() {
         </div>
       )}
 
-      {/* 模块磁贴:2×2,完成态沿用模块色 */}
-      <h2 className="px-1 pt-1 text-[13px] font-bold text-stone-500">四大模块</h2>
+      {/* 模块磁贴:2×2 + 拼写通栏,完成态沿用模块色 */}
+      <h2 className="px-1 pt-1 text-[13px] font-bold text-stone-500">模块训练</h2>
       <div className="grid grid-cols-2 gap-2.5">
         {MODULE_ENTRIES.map((m) => {
           const done = data.modulesTouched.includes(m.type);
@@ -135,7 +147,9 @@ export default function Practice() {
               key={m.type}
               to={m.to}
               title={done ? `${m.label}今日已练,再练巩固` : `今日还没练${m.label}`}
-              className="flex flex-col gap-2.5 rounded-2xl border border-stone-200/80 bg-white p-3.5 shadow-soft transition-all duration-150 hover:border-stone-300 active:scale-[0.97]"
+              className={`flex rounded-2xl border border-stone-200/80 bg-white p-3.5 shadow-soft transition-all duration-150 hover:border-stone-300 active:scale-[0.97] ${
+                m.wide ? "col-span-2 flex-row items-center gap-3" : "flex-col gap-2.5"
+              }`}
             >
               <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${m.disc} ${m.ink}`}>
                 <Icon className="h-[22px] w-[22px]" />

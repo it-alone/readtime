@@ -58,7 +58,8 @@ export type SessionType =
   | "grammar-quiz"
   | "listening-dictation"
   | "reading-quiz"
-  | "pron-drill";
+  | "pron-drill"
+  | "spelling-drill";
 
 export interface SessionItem {
   wordId: string;

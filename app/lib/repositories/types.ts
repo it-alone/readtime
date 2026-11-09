@@ -8,6 +8,7 @@ import type {
   Progress,
   ReadingArticle,
   ReviewState,
+  SessionType,
   Settings,
   Stage,
   VocabWord,
@@ -51,6 +52,8 @@ export interface SessionRepository {
   recent(limit: number): Promise<LearningSession[]>;
   /** startedAt >= cutoff 的会话(ISO 字符串,按 by-startedAt 索引区间查询) */
   since(cutoff: string): Promise<LearningSession[]>;
+  /** 指定类型的全部会话,按 startedAt 升序(拼写错词队列按最近结果推导用) */
+  allOfType(type: SessionType): Promise<LearningSession[]>;
 }
 
 /** 语法课程轻量索引项(列表页用;正文/例句/题目在分片 JSON 里按需取) */

@@ -1,7 +1,12 @@
 import { updateStreak, todayStr } from "~/lib/gamify/streak";
-import { computeSessionXp, computeListeningXp, computeGrammarXp, computeReadingXp, computePronXp } from "~/lib/gamify/xp";
+import { computeSessionXp, computeListeningXp, computeSpellingXp, computeGrammarXp, computeReadingXp, computePronXp } from "~/lib/gamify/xp";
 import { buildVocabTask } from "~/lib/scheduler/daily";
 import { buildListeningTask, LISTENING_SESSION_SIZE } from "~/lib/scheduler/listening";
+import {
+  buildSpellingTask,
+  collectSpellingWrongIds,
+  SPELLING_SESSION_SIZE,
+} from "~/lib/scheduler/spelling";
 import {
   buildPronDrill,
   collectReadingSentences,
@@ -83,6 +88,21 @@ export interface VocabService {
   }>;
   /** 听力会话结算:不触碰 SM-2 与词库指针,仅记录会话/日志/XP */
   completeListeningSession(
+    results: ItemResult[],
+    startedAt: Date,
+    now?: Date
+  ): Promise<CompletionSummary>;
+  /**
+   * 单词拼写:从已学词随机抽 30 词看义拼写,同一轮不重复;
+   * 之前拼错的词优先入选,直至拼对(未学任何词时 items 为空)。
+   */
+  buildSpellingPractice(now?: Date): Promise<{
+    task: VocabTask;
+    /** 当前仍在错词队列里的词数(页面提示用) */
+    wrongCount: number;
+  }>;
+  /** 拼写会话结算:与听写同口径,不触碰 SM-2 与词库指针;错词队列由会话历史推导 */
+  completeSpellingSession(
     results: ItemResult[],
     startedAt: Date,
     now?: Date
@@ -464,6 +484,92 @@ function createLocalServices(): Services {
         progress: nextProgress,
         session,
         entry: makeOutboxEntry("listening-session", { results, xpEarned }, now),
+      });
+      return {
+        xpEarned,
+        streak,
+        newCount: 0,
+        reviewedCount: results.length,
+        streakProtected: protectedByFreeze,
+      };
+    },
+
+    async buildSpellingPractice(now = new Date()) {
+      const [progress, states, spellingSessions] = await Promise.all([
+        progressRepo.get(),
+        reviews.all(),
+        sessions.allOfType("spelling-drill"),
+      ]);
+      // 已学词可能来自往年(阅读点词/往年主线),跨 stage 解析
+      const wordById = new Map(
+        (await loadStagesUpTo(content, progress.stage)).map((w) => [w.id, w]),
+      );
+      const learned = states
+        .map((s) => wordById.get(s.wordId))
+        .filter((w): w is VocabWord => w !== undefined);
+      // 错词队列从会话历史推导:每词以最近一次拼写结果为准,拼对即出队
+      const wrongIds = collectSpellingWrongIds(spellingSessions);
+      const seed = now.getTime() % 2147483647;
+      const task = buildSpellingTask({
+        words: learned,
+        wrongIds,
+        count: SPELLING_SESSION_SIZE,
+        seed,
+      });
+      // 阅读来源的词同样带"回原文"入口(QuizCard 渲染 item.origin)
+      const stateById = new Map(states.map((s) => [s.wordId, s]));
+      const items = task.items.map((it) => {
+        const st = stateById.get(it.word.id);
+        return st?.source === "reading" && st.sourceArticleId
+          ? { ...it, origin: { articleId: st.sourceArticleId } }
+          : it;
+      });
+      return {
+        task: { ...task, items },
+        wrongCount: wrongIds.filter((id) => wordById.has(id)).length,
+      };
+    },
+
+    async completeSpellingSession(results, startedAt, now = new Date()) {
+      const xpEarned = computeSpellingXp(results);
+      const [progress, log] = await Promise.all([progressRepo.get(), logs.get(todayStr(now))]);
+      const { streak, protectedByFreeze } = updateStreak(progress.streak, now);
+      const minutes = Math.max(1, Math.round((now.getTime() - startedAt.getTime()) / 60000));
+
+      const mergedLog: DailyLog = {
+        ...log,
+        reviewsDone: log.reviewsDone + results.length,
+        minutes: log.minutes + minutes,
+        xp: log.xp + xpEarned,
+        modulesTouched: log.modulesTouched.includes("spelling-drill")
+          ? log.modulesTouched
+          : [...log.modulesTouched, "spelling-drill"],
+      };
+      const nextProgress: ProgressType = {
+        ...progress,
+        streak,
+        xp: progress.xp + xpEarned,
+        updatedAt: now.toISOString(),
+      };
+      const session: LearningSession = {
+        id: newUuid(),
+        type: "spelling-drill",
+        startedAt: startedAt.toISOString(),
+        endedAt: now.toISOString(),
+        items: results.map((r) => ({
+          wordId: r.wordId,
+          kind: r.kind,
+          grade: r.grade,
+          elapsedMs: r.elapsedMs,
+        })),
+        xpEarned,
+      };
+      await persistCompletion({
+        states: [], // 拼写不写 SM-2,间隔调度仍以词汇会话的评分为准
+        log: mergedLog,
+        progress: nextProgress,
+        session,
+        entry: makeOutboxEntry("spelling-session", { results, xpEarned }, now),
       });
       return {
         xpEarned,

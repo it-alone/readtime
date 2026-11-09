@@ -22,17 +22,18 @@ interface TabDef {
 
 const TABS: TabDef[] = [
   { to: "/", match: /^\/$/, icon: HomeIcon, label: "今日" },
-  // 练习域:练习中枢 + 四大模块列表/详情 + 短语库(从练习页进入)
+  // 练习域:练习中枢 + 各训练模块列表/详情 + 短语库(从练习页进入)
   { to: "/practice", match: /^\/(practice|learn|phrases)/, icon: DumbbellIcon, label: "练习" },
   { to: "/words", match: /^\/words/, icon: FolderIcon, label: "词库" },
   { to: "/stats", match: /^\/stats/, icon: ChartIcon, label: "周报" },
   { to: "/settings", match: /^\/settings/, icon: SlidersIcon, label: "设置" },
 ];
 
-// 沉浸式学习页(词汇答题/听写/跟读/课文与精听播放器)隐藏底栏:防误触、保持专注
+// 沉浸式学习页(词汇答题/听写/拼写/跟读/课文与精听播放器)隐藏底栏:防误触、保持专注
 const IMMERSIVE: RegExp[] = [
   /^\/learn\/vocab/,
   /^\/learn\/pron/,
+  /^\/learn\/spelling/,
   /^\/learn\/listening\/dictation/,
   /^\/learn\/(grammar|listening|reading)\/[^/]+/,
 ];

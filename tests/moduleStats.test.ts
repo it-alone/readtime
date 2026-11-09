@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { summarizeModules } from "~/lib/diagnosis/modules";
 import type { Grade, LearningSession, SessionItem } from "~/models/types";
 
-// 模块训练汇总:窗口过滤 + 五模块零值兜底 + grade>=3 计正确(与留存率同口径)
+// 模块训练汇总:窗口过滤 + 各模块零值兜底 + grade>=3 计正确(与留存率同口径)
 
 const NOW = new Date("2026-09-29T12:00:00+08:00");
 const DAY_MS = 86_400_000;
@@ -21,7 +21,7 @@ function session(
 }
 
 describe("summarizeModules", () => {
-  it("空输入时五个模块全为零值,accuracy 为 undefined", () => {
+  it("空输入时各模块全为零值,accuracy 为 undefined", () => {
     const all = summarizeModules([], NOW);
     expect(all.map((m) => m.type)).toEqual([
       "vocab",
@@ -29,6 +29,7 @@ describe("summarizeModules", () => {
       "listening-dictation",
       "reading-quiz",
       "pron-drill",
+      "spelling-drill",
     ]);
     expect(all.every((m) => m.sessions === 0 && m.items === 0 && m.accuracy === undefined)).toBe(true);
   });

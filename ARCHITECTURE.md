@@ -129,12 +129,12 @@
 
 **页面路由(`app/routes/`):**
 
-导航骨架:全局液态玻璃底栏(`components/TabBar.tsx`,五个 tab:今日 / 练习 / 词库 / 周报 / 设置);沉浸式学习页(词汇会话/听写/跟读/精听与课文播放器)自动隐藏底栏,页面滚动区用 `.pb-tabbar` 让出底栏空间。
+导航骨架:全局液态玻璃底栏(`components/TabBar.tsx`,五个 tab:今日 / 练习 / 词库 / 周报 / 设置);沉浸式学习页(词汇会话/听写/拼写/跟读/精听与课文播放器)自动隐藏底栏,页面滚动区用 `.pb-tabbar` 让出底栏空间。
 
 | 路由文件 | 路径 | 说明 | 数据来源 |
 | --- | --- | --- | --- |
 | `_index.tsx` | `/` | 今日任务台(底栏「今日」tab:打卡、连胜、任务主卡、勋章) | Progress + DailyLog |
-| `practice.tsx` | `/practice` | 练习中枢(底栏「练习」tab:词汇主线入口 + 四大模块磁贴 + 短语库入口) | Progress + DailyLog + Task |
+| `practice.tsx` | `/practice` | 练习中枢(底栏「练习」tab:词汇主线入口 + 训练模块磁贴 + 短语库入口) | Progress + DailyLog + Task |
 | `words.tsx` | `/words` | 词库浏览(三年 10,000 词,按 unit 折叠 + 搜索 + 级别筛选 + 发音) | ContentRepo(静态,按 stage 懒加载) |
 | `phrases.tsx` | `/phrases` | 短语库浏览(三年 1,059 条,按分组折叠 + 搜索 + 级别筛选 + TTS 发音,核心词 ⊆ 累积词库) | ContentRepo(静态,按 stage 懒加载) |
 | `learn.vocab.tsx` | `/learn/vocab` | 词汇学习会话(新词+复习混合) | ReviewRepo + ContentRepo |
@@ -144,6 +144,7 @@
 | `learn.listening.$itemId.tsx` | `/learn/listening/:itemId` | 精听会话(逐句播放/连播/盲听 + 理解题) | ContentRepo(listening) + Audio |
 | `learn.reading._index.tsx` / `learn.reading.$articleId.tsx` | `/learn/reading(/:id)` | 阅读文章列表 / 文+理解题+生词摘录 | ContentRepo |
 | `learn.pron.tsx` | `/learn/pron` | 发音训练(例句/文章句跟读打分) | PronEvaluator |
+| `learn.spelling.tsx` | `/learn/spelling` | 单词拼写(已学词随机 30 词看义拼写,错词优先回归直至拼对) | ReviewRepo + SessionRepo + ContentRepo |
 | `assess.$type.tsx` | `/assess/:type` | 测评(placement/monthly/annual,规划中) | AssessmentRepo |
 | `stats.tsx` | `/stats` | 学习周报主页(概览数字 + XP 走势 + 详情入口卡 + 下周建议) | DailyLog 聚合 |
 | `stats.modules.tsx` | `/stats/modules` | 周报二级页:模块训练均衡度明细(会话/题数/正确率) | moduleSummary |
@@ -234,7 +235,7 @@ interface SessionItem {
 
 interface LearningSession {
   id: string;
-  type: 'vocab' | 'grammar-quiz' | 'listening-dictation' | 'reading-quiz' | 'pron-drill';
+  type: 'vocab' | 'grammar-quiz' | 'listening-dictation' | 'reading-quiz' | 'pron-drill' | 'spelling-drill';
   startedAt: string; endedAt: string | null;
   items: SessionItem[];
   xpEarned: number;
@@ -325,7 +326,7 @@ interface DailyScheduler {
 
 | 规则 | 逻辑 |
 | --- | --- |
-| XP | 新词 10/词、复习通过 5/词、会话完成 +20、测评完成 +100 |
+| XP | 新词 10/词、复习通过 5/词、会话完成 +20、测评完成 +100;补充模块(听力/语法/阅读/发音/拼写)答对 3/题 + 会话完成 +20 |
 | 连胜 | 当日任意会话完成即维持;跨日以**本地时区**判断;复盘日不计断卡;`freezesLeft` 消耗保护 |
 | 勋章 | 里程碑驱动(词汇 1000/3000/6000/10000、连胜 7/30/100、CEFR 达标),纯配置表 `models/badges.ts` |
 
@@ -511,7 +512,7 @@ readTime/
 │   │   ├── repositories/        # ReviewRepo/ProgressRepo/SettingsRepo/ContentRepo/AssessmentRepo
 │   │   ├── storage/             # IndexedDB(idb 封装):建库、版本迁移链、事务与索引
 │   │   ├── srs/                 # SM-2(纯函数)
-│   │   ├── scheduler/           # 每日任务编排
+│   │   ├── scheduler/           # 任务编排:每日主线 / 听力 / 发音 / 拼写(纯函数)
 │   │   ├── diagnosis/           # 测评诊断
 │   │   ├── gamify/              # XP/连胜/勋章规则
 │   │   ├── pron/                # PronEvaluator 适配器

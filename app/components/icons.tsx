@@ -68,6 +68,16 @@ export function MicIcon(props: IconProps) {
   );
 }
 
+/** 拼写:铅笔 */
+export function PencilIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+      <path d="m15 5 4 4" />
+    </Svg>
+  );
+}
+
 /** 短语库:对话气泡 */
 export function ChatIcon(props: IconProps) {
   return (

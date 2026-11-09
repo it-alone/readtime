@@ -1,7 +1,7 @@
 import type { ItemResult } from "~/models/types";
 
 // XP 规则(见 ARCHITECTURE.md §6.3):新词 10/词、复习通过 5/词、会话完成 +20、
-// 听力巩固 3/题、语法练习 3/题、阅读理解 3/题、发音跟读 3/题、测评 +100
+// 听力巩固 3/题、语法练习 3/题、阅读理解 3/题、发音跟读 3/题、单词拼写 3/词、测评 +100
 
 export const XP_RULES = {
   NEW_WORD: 10,
@@ -11,6 +11,7 @@ export const XP_RULES = {
   GRAMMAR_CORRECT: 3,
   READING_CORRECT: 3,
   PRON_CORRECT: 3,
+  SPELLING_CORRECT: 3,
   ASSESSMENT: 100,
 } as const;
 
@@ -27,6 +28,12 @@ export function computeSessionXp(results: ItemResult[]): number {
 /** 听力巩固:不影响 SM-2 与词库指针,答对按题计 XP + 会话完成奖励 */
 export function computeListeningXp(results: ItemResult[]): number {
   const itemXp = results.filter((r) => r.correct).length * XP_RULES.LISTENING_CORRECT;
+  return results.length > 0 ? itemXp + XP_RULES.SESSION_COMPLETE : 0;
+}
+
+/** 单词拼写:与听力同口径——拼对按词计 XP + 会话完成奖励 */
+export function computeSpellingXp(results: ItemResult[]): number {
+  const itemXp = results.filter((r) => r.correct).length * XP_RULES.SPELLING_CORRECT;
   return results.length > 0 ? itemXp + XP_RULES.SESSION_COMPLETE : 0;
 }
 

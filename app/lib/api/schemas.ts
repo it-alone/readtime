@@ -150,7 +150,14 @@ export const DailyLogSchema = z.object({
   minutes: z.number(),
   xp: z.number(),
   modulesTouched: z.array(
-    z.enum(["vocab", "grammar-quiz", "listening-dictation", "reading-quiz", "pron-drill"])
+    z.enum([
+      "vocab",
+      "grammar-quiz",
+      "listening-dictation",
+      "reading-quiz",
+      "pron-drill",
+      "spelling-drill",
+    ])
   ),
 });
 
@@ -164,7 +171,14 @@ export const OutboxEntrySchema = z.object({
 
 export const LearningSessionSchema = z.object({
   id: z.string(),
-  type: z.enum(["vocab", "grammar-quiz", "listening-dictation", "reading-quiz", "pron-drill"]),
+  type: z.enum([
+    "vocab",
+    "grammar-quiz",
+    "listening-dictation",
+    "reading-quiz",
+    "pron-drill",
+    "spelling-drill",
+  ]),
   startedAt: z.string(),
   endedAt: z.string().nullable(),
   items: z.array(
