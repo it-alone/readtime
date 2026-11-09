@@ -145,7 +145,9 @@
 | `learn.reading._index.tsx` / `learn.reading.$articleId.tsx` | `/learn/reading(/:id)` | 阅读文章列表 / 文+理解题+生词摘录 | ContentRepo |
 | `learn.pron.tsx` | `/learn/pron` | 发音训练(例句/文章句跟读打分) | PronEvaluator |
 | `assess.$type.tsx` | `/assess/:type` | 测评(placement/monthly/annual,规划中) | AssessmentRepo |
-| `stats.tsx` | `/stats` | 学习周报/弱项诊断 | DailyLog 聚合 |
+| `stats.tsx` | `/stats` | 学习周报主页(概览数字 + XP 走势 + 详情入口卡 + 下周建议) | DailyLog 聚合 |
+| `stats.modules.tsx` | `/stats/modules` | 周报二级页:模块训练均衡度明细(会话/题数/正确率) | moduleSummary |
+| `stats.memory.tsx` | `/stats/memory` | 周报二级页:记忆档案(复习留存率 + 弱词榜) | ReviewRepo 聚合 |
 | `settings.tsx` | `/settings` | 每日新词量、倍速、数据导出 | SettingsRepo |
 | `api.*.ts` | `/api/*` | Resource routes(阶段 1 激活,见第八节) | — |
 
