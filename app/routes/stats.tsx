@@ -131,7 +131,7 @@ export default function Stats() {
   }
 
   return (
-    <PageShell title="学习周报" back="/">
+    <PageShell title="学习周报">
       <div className="flex items-center justify-between px-1">
         <p className="text-xs text-slate-400">近 7 天 · 每周日回顾并调整下周计划</p>
         <span className="rounded-full bg-gradient-to-b from-amber-400 to-orange-500 px-3 py-1.5 text-sm font-bold text-white shadow-[0_6px_16px_-6px_rgba(245,158,11,0.6)]">

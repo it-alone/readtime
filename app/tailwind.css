@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  /* 悬浮玻璃底栏让出的滚动空间(含 iOS 安全区;底栏约 62px + 悬浮 12px + 呼吸) */
+  .pb-tabbar {
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 6.5rem);
+  }
+}
+
 /* 全局基底(设计系统见 ARCHITECTURE.md §4.3):字体渲染、选中色、滚动条、点击高亮 */
 @layer base {
   html {

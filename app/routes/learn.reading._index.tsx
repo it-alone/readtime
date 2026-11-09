@@ -52,7 +52,7 @@ export default function ReadingList() {
   const meta = LEVEL_INTRO[activeLevel];
 
   return (
-    <PageShell title="阅读训练" back="/">
+    <PageShell title="阅读训练" back="/practice">
       <Card className="space-y-3">
         <div className="flex items-end justify-between">
           <div>

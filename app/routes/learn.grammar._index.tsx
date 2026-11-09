@@ -49,7 +49,7 @@ export default function GrammarList() {
   const meta = STAGE_META[activeStage] ?? { eyebrow: "", title: `第 ${activeStage} 年`, hint: "" };
 
   return (
-    <PageShell title="语法课程" back="/">
+    <PageShell title="语法课程" back="/practice">
       <Card className="space-y-3">
         <div className="flex items-end justify-between">
           <div>

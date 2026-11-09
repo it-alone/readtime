@@ -323,7 +323,7 @@ export function PageShell({
           <h1 className="truncate text-lg font-bold tracking-tight text-slate-900">{title}</h1>
         </div>
       </header>
-      <div className="relative space-y-4 p-4 pb-10 animate-fade-up">{children}</div>
+      <div className="relative space-y-4 p-4 pb-tabbar animate-fade-up">{children}</div>
     </main>
   );
 }

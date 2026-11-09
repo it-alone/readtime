@@ -71,7 +71,7 @@ export default function SettingsPage() {
   const quotaMb = data.estimate ? (data.estimate.quota / 1024 / 1024).toFixed(0) : null;
 
   return (
-    <PageShell title="设置" back="/">
+    <PageShell title="设置">
       <Card className="space-y-4">
         <SectionHeader eyebrow="PACE · 节奏" title="学习节奏" />
         <label className="block space-y-1.5">

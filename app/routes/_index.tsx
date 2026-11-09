@@ -1,67 +1,15 @@
 import type { ReactNode } from "react";
 import { Link, useLoaderData } from "@remix-run/react";
 import { Card } from "~/components/ui";
-import {
-  BookOpenIcon,
-  ChartIcon,
-  ChatIcon,
-  FolderIcon,
-  HeadphonesIcon,
-  MicIcon,
-  NewspaperIcon,
-  SlidersIcon,
-} from "~/components/icons";
+import { BookOpenIcon } from "~/components/icons";
 import { getServices } from "~/lib/api/local";
 import { todayStr } from "~/lib/gamify/streak";
 import { earnedBadges } from "~/models/badges";
-import { VOCAB_POINTER_END, type SessionType } from "~/models/types";
+import { VOCAB_POINTER_END } from "~/models/types";
 
-// 首页:今日任务台(打卡、连胜、任务入口,见 ARCHITECTURE.md §4.2)
-// 视觉语言「墨蓝 · 暖金」:象牙纸底 + 深墨蓝任务主卡 + 暖金行动色,标题走衬线字;
-// 模块入口为 2×2 淡彩磁贴(色相与各模块页一致),词汇是主线任务(主卡 + 进度环)。
-
-/** 模块速通入口(词汇主线已单独展示,不重复);每个模块固定色相,全站一致 */
-const MODULE_ENTRIES: {
-  type: SessionType;
-  icon: (props: React.SVGProps<SVGSVGElement>) => ReactNode;
-  label: string;
-  to: string;
-  disc: string;
-  ink: string;
-}[] = [
-  {
-    type: "grammar-quiz",
-    icon: BookOpenIcon,
-    label: "语法",
-    to: "/learn/grammar",
-    disc: "bg-violet-100/80",
-    ink: "text-violet-600",
-  },
-  {
-    type: "listening-dictation",
-    icon: HeadphonesIcon,
-    label: "听力",
-    to: "/learn/listening",
-    disc: "bg-sky-100/80",
-    ink: "text-sky-600",
-  },
-  {
-    type: "reading-quiz",
-    icon: NewspaperIcon,
-    label: "阅读",
-    to: "/learn/reading",
-    disc: "bg-amber-100/80",
-    ink: "text-amber-600",
-  },
-  {
-    type: "pron-drill",
-    icon: MicIcon,
-    label: "发音",
-    to: "/learn/pron",
-    disc: "bg-rose-100/80",
-    ink: "text-rose-500",
-  },
-];
+// 首页(底栏「今日」tab):只保留任务主线——今日任务主卡 + 数据带 + 勋章。
+// 模块与工具入口已收进底栏(练习/词库/周报/设置),见 components/TabBar.tsx。
+// 视觉语言「墨蓝 · 暖金」:象牙纸底 + 深墨蓝任务主卡 + 暖金行动色,标题走衬线字。
 
 export async function clientLoader() {
   if (typeof window === "undefined") return null;
@@ -89,7 +37,6 @@ export async function clientLoader() {
     reviewsCleared: todayLog.reviewsDone,
     reviewRemaining,
     remaining: task.items.length,
-    modulesTouched: todayLog.modulesTouched,
     vocabExhausted,
   };
 }
@@ -222,7 +169,7 @@ export default function Index() {
   const reviewPct = reviewTotal > 0 ? (data.reviewsCleared / reviewTotal) * 100 : 100;
 
   return (
-    <main className="relative mx-auto min-h-screen w-full max-w-lg pb-10">
+    <main className="relative mx-auto min-h-screen w-full max-w-lg pb-tabbar">
       {/* 顶部氛围光:暖金晕染,衬托墨蓝主卡 */}
       <div
         aria-hidden
@@ -338,33 +285,6 @@ export default function Index() {
           </Card>
         ) : null}
 
-        {/* 模块速通:2×2 淡彩磁贴,完成态沿用模块色 */}
-        <h2 className="px-1 pt-1 text-[13px] font-bold text-stone-500">今天练什么</h2>
-        <div className="grid grid-cols-2 gap-2.5">
-          {MODULE_ENTRIES.map((m) => {
-            const done = data.modulesTouched.includes(m.type);
-            const Icon = m.icon;
-            return (
-              <Link
-                key={m.type}
-                to={m.to}
-                title={done ? `${m.label}今日已练,再练巩固` : `今日还没练${m.label}`}
-                className="flex items-center gap-3 rounded-2xl border border-stone-200/80 bg-white p-3 shadow-soft transition-all duration-150 hover:border-stone-300 active:scale-[0.97]"
-              >
-                <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${m.disc} ${m.ink}`}>
-                  <Icon className="h-[22px] w-[22px]" />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-bold text-stone-800">{m.label}</span>
-                  <span className={`mt-0.5 block text-xs font-medium ${done ? m.ink : "text-stone-400"}`}>
-                    {done ? "今日已练 ✓" : "今日未练"}
-                  </span>
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-
         {/* 数据带:一体式三格,衬线大数字 */}
         <section className="flex divide-x divide-stone-200/70 rounded-3xl border border-stone-200/70 bg-white shadow-soft">
           {[
@@ -395,28 +315,6 @@ export default function Index() {
             </div>
           </Card>
         ) : null}
-
-        {/* 全局工具 */}
-        <div className="grid grid-cols-2 gap-2.5">
-          {[
-            { to: "/words", icon: FolderIcon, label: "词库浏览" },
-            { to: "/phrases", icon: ChatIcon, label: "短语库" },
-            { to: "/stats", icon: ChartIcon, label: "学习周报" },
-            { to: "/settings", icon: SlidersIcon, label: "设置" },
-          ].map((t) => {
-            const Icon = t.icon;
-            return (
-              <Link
-                key={t.to}
-                to={t.to}
-                className="flex items-center justify-center gap-1.5 rounded-xl border border-stone-200/80 bg-white py-2.5 text-xs font-semibold text-stone-600 shadow-sm transition hover:border-amber-300 hover:bg-amber-50/40 hover:text-amber-800 active:scale-95"
-              >
-                <Icon className="h-4 w-4" />
-                {t.label}
-              </Link>
-            );
-          })}
-        </div>
       </div>
     </main>
   );

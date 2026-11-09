@@ -19,14 +19,14 @@ export default function LearnPron() {
 
   if (data.items.length === 0) {
     return (
-      <PageShell title="发音训练" back="/">
+      <PageShell title="发音训练" back="/practice">
         <EmptyState icon="🎤" title="词库还没有准备好" hint="先去学几组新词,这里就会用你学过的例句生成跟读练习。" />
       </PageShell>
     );
   }
 
   return (
-    <PageShell title="发音训练" back="/">
+    <PageShell title="发音训练" back="/practice">
       <PronPlayer items={data.items} rate={data.rate} />
     </PageShell>
   );

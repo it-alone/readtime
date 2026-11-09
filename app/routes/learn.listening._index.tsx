@@ -43,7 +43,7 @@ export default function ListeningHome() {
   };
 
   return (
-    <PageShell title="听力训练" back="/">
+    <PageShell title="听力训练" back="/practice">
       {/* 今日听写:听感模块用天空蓝渐变主卡,与首页模块磁贴同色相 */}
       <Link
         to="/learn/listening/dictation"

@@ -13,6 +13,7 @@ import {
 } from "@remix-run/react";
 import { ServicesProvider } from "~/context/providers";
 import { BookOpenIcon } from "~/components/icons";
+import { TabBar } from "~/components/TabBar";
 import { subscribeSettingsChanged } from "~/lib/storage/broadcast";
 import stylesheet from "~/tailwind.css?url";
 
@@ -95,6 +96,8 @@ export default function App() {
       <SettingsSyncBridge />
       <RouteTransitionBar />
       <Outlet />
+      {/* 液态玻璃底栏:沉浸式学习页(答题/听写/跟读)由 TabBar 自行隐藏 */}
+      <TabBar />
     </ServicesProvider>
   );
 }

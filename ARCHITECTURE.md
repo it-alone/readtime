@@ -129,9 +129,12 @@
 
 **页面路由(`app/routes/`):**
 
+导航骨架:全局液态玻璃底栏(`components/TabBar.tsx`,五个 tab:今日 / 练习 / 词库 / 周报 / 设置);沉浸式学习页(词汇会话/听写/跟读/精听与课文播放器)自动隐藏底栏,页面滚动区用 `.pb-tabbar` 让出底栏空间。
+
 | 路由文件 | 路径 | 说明 | 数据来源 |
 | --- | --- | --- | --- |
-| `_index.tsx` | `/` | 今日任务台(打卡、连胜、任务入口) | Progress + DailyLog |
+| `_index.tsx` | `/` | 今日任务台(底栏「今日」tab:打卡、连胜、任务主卡、勋章) | Progress + DailyLog |
+| `practice.tsx` | `/practice` | 练习中枢(底栏「练习」tab:词汇主线入口 + 四大模块磁贴 + 短语库入口) | Progress + DailyLog + Task |
 | `words.tsx` | `/words` | 词库浏览(三年 10,000 词,按 unit 折叠 + 搜索 + 级别筛选 + 发音) | ContentRepo(静态,按 stage 懒加载) |
 | `phrases.tsx` | `/phrases` | 短语库浏览(三年 1,059 条,按分组折叠 + 搜索 + 级别筛选 + TTS 发音,核心词 ⊆ 累积词库) | ContentRepo(静态,按 stage 懒加载) |
 | `learn.vocab.tsx` | `/learn/vocab` | 词汇学习会话(新词+复习混合) | ReviewRepo + ContentRepo |

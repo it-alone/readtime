@@ -127,7 +127,7 @@ export default function WordsBrowser() {
   }
 
   return (
-    <PageShell title="词库浏览" back="/">
+    <PageShell title="词库浏览">
       <p className="text-xs leading-relaxed text-slate-400">
         三年全部 30,000 词(每年 10,000),按单元浏览,支持搜索、级别筛选与发音试听。
       </p>

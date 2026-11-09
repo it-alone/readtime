@@ -100,6 +100,30 @@ export function ChartIcon(props: IconProps) {
   );
 }
 
+/** 底栏「今日」:房子 */
+export function HomeIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M4 10.5 12 4l8 6.5" />
+      <path d="M5.5 9.5V20h13V9.5" />
+      <path d="M10 20v-5h4v5" />
+    </Svg>
+  );
+}
+
+/** 底栏「练习」:哑铃 */
+export function DumbbellIcon(props: IconProps) {
+  return (
+    <Svg {...props}>
+      <path d="M7 8v8" />
+      <path d="M17 8v8" />
+      <path d="M4 10v4" />
+      <path d="M20 10v4" />
+      <path d="M7 12h10" />
+    </Svg>
+  );
+}
+
 /** 设置:滑杆 */
 export function SlidersIcon(props: IconProps) {
   return (
