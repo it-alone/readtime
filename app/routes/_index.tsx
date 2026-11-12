@@ -3,7 +3,7 @@ import { Link, useLoaderData } from "@remix-run/react";
 import { Card } from "~/components/ui";
 import { BookOpenIcon } from "~/components/icons";
 import { getServices } from "~/lib/api/local";
-import { todayStr } from "~/lib/gamify/streak";
+import { retentionSamples } from "~/lib/diagnosis/retention";
 import { earnedBadges } from "~/models/badges";
 import { VOCAB_POINTER_END } from "~/models/types";
 
@@ -15,15 +15,18 @@ export async function clientLoader() {
   if (typeof window === "undefined") return null;
   const services = getServices();
   const now = new Date();
-  const [progress, task, learned, todayLog] = await Promise.all([
+  const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+  const [progress, task, learned, todaySessions] = await Promise.all([
     services.progress.get(),
     services.vocab.getTodayTask(now),
     services.vocab.learnedWordCount(),
-    services.logs.get(todayStr(now)),
+    services.sessions.since(dayStart),
   ]);
   // 新词分母用"今日生效目标"= 已学 + 本任务剩余(留存率下调/阶段收尾时不会出现 0/10 的空进度)
   const newTargetToday = task.goal.newDone + task.goal.newTarget;
-  // 待复习口径:已清 todayLog.reviewsDone + 仍到期 task 中复习项数(复习完成后 getDue 缩水,不能用 dueCount 差值)
+  // 待复习口径:只认词汇主线(经 SM-2 调度的复习)。听力/拼写等练习虽也计入日志的
+  // reviewsDone,但不清 SM-2 到期队列,混进今日环会出现"环涨了、剩余却不动"的矛盾
+  const reviewsCleared = retentionSamples(todaySessions.filter((s) => s.type === "vocab"));
   const reviewRemaining = task.items.filter((i) => i.kind === "review").length;
   // 三年词库学尽后不再提供"继续学习"入口(点进去也无新词可发)
   const vocabExhausted = progress.stage === 3 && progress.vocabPointer === VOCAB_POINTER_END;
@@ -34,7 +37,7 @@ export async function clientLoader() {
     learned,
     goal: task.goal,
     newTargetToday,
-    reviewsCleared: todayLog.reviewsDone,
+    reviewsCleared,
     reviewRemaining,
     remaining: task.items.length,
     vocabExhausted,

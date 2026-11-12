@@ -246,6 +246,8 @@ export interface Services {
   progress: ProgressRepository;
   settings: SettingsRepository;
   logs: DailyLogRepository;
+  /** 会话历史(首页今日环按词汇主线会话统计复习进度) */
+  sessions: SessionRepository;
   stats: StatsService;
   storage: StorageAdmin;
 }
@@ -274,13 +276,19 @@ function createLocalServices(): Services {
 
   const vocab: VocabService = {
     async getTodayTask(now = new Date(), opts?: { extra?: boolean }) {
+      // 当日新词目标依据「今天之前」的历史留存率确定:当天答得好坏不影响今天的目标,
+      // 否则每场会话后分母都会漂移,进度条永远对不上(目标明天才重新评估)
+      const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       const [settings, progress, log, dueStates, recentSessions] = await Promise.all([
         settingsRepo.get(),
         progressRepo.get(),
         logs.get(todayStr(now)),
         reviews.getDue(now, Number.POSITIVE_INFINITY),
-        sessions.recent(20),
+        sessions.since(new Date(dayStart.getTime() - 7 * 86_400_000).toISOString()),
       ]);
+      const historySessions = recentSessions
+        .filter((s) => s.startedAt < dayStart.toISOString())
+        .slice(-20);
       const stageWords = await content.loadStage(progress.stage);
       // 到期复习可能来自往年词表(stage 推进后旧词仍在 SM-2 队列),按 1..stage 合并解析
       const wordById = new Map(
@@ -289,14 +297,14 @@ function createLocalServices(): Services {
       const dueWords = dueStates
         .map((s) => wordById.get(s.wordId))
         .filter((w): w is VocabWord => w !== undefined);
-      // 留存率闭环:近期复习正确率 < 0.8 时调度器减半新词(PLAN.md 风险应对)
+      // 留存率闭环:近期复习正确率 < 0.8 时当日新词目标减半(PLAN.md 风险应对)
       const task = buildVocabTask({
         dueWords,
         stageWords,
         pointerIndex: indexOfPointer(stageWords, progress.vocabPointer),
         dailyNewTarget: settings.dailyNewWords,
         newDoneToday: log.newWordsLearned,
-        retentionRate: computeRetentionRate(recentSessions),
+        retentionRate: computeRetentionRate(historySessions),
         extra: opts?.extra,
       });
       // 阅读来源的复习项带上来源文章,卡片渲染"回原文"
@@ -893,6 +901,7 @@ function createLocalServices(): Services {
     progress: progressRepo,
     settings: settingsRepo,
     logs,
+    sessions,
     stats,
     storage: {
       exportAll: exportBundle,

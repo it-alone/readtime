@@ -11,7 +11,7 @@ export interface BuildTaskInput {
   pointerIndex: number;
   dailyNewTarget: number;
   newDoneToday: number;
-  /** 近期复习留存率(0-1);<0.8 时自动减半新词量(PLAN.md 风险应对) */
+  /** 今日之前的历史复习留存率(0-1);<0.8 时当日新词目标减半(PLAN.md 风险应对)。传历史而非当日实时值,保证当天目标稳定 */
   retentionRate?: number;
   /** 继续学习:日目标已达成仍要多学,按日目标量再发一组新词(主动加练,不受留存率减半) */
   extra?: boolean;
@@ -24,10 +24,14 @@ export interface BuiltTask {
 
 export function buildVocabTask(input: BuildTaskInput): BuiltTask {
   const due = input.dueWords.slice(0, MAX_REVIEWS_PER_SESSION);
-  let target = Math.max(0, input.dailyNewTarget - input.newDoneToday);
-  if (input.retentionRate !== undefined && input.retentionRate < 0.8) {
-    target = Math.ceil(target / 2);
-  }
+  // 留存率低迷时减半的是「当日新词目标」(减一次、整天稳定),而不是每次取任务时
+  // 对剩余量再减半——否则每完成一组就冒出 ceil(剩余/2) 的新题,当日目标永远追
+  // 不满,首页分母随会话漂移(Zeno)。调用方用「今天之前」的历史留存率保证当天不变。
+  const dailyGoal =
+    input.retentionRate !== undefined && input.retentionRate < 0.8
+      ? Math.ceil(input.dailyNewTarget / 2)
+      : input.dailyNewTarget;
+  let target = Math.max(0, dailyGoal - input.newDoneToday);
   if (input.extra && target === 0) target = input.dailyNewTarget;
   const fresh = input.stageWords.slice(input.pointerIndex, input.pointerIndex + target);
   const newItems: TaskItem[] = fresh.map((word) => ({ word, kind: "new", quiz: quizFor(word, "new") }));

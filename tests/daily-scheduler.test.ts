@@ -71,7 +71,7 @@ describe("每日任务编排", () => {
     expect(task.goal.newTarget).toBe(0);
   });
 
-  it("留存率 < 0.8 时新词减半(PLAN 风险应对)", () => {
+  it("留存率 < 0.8 时当日新词目标减半(PLAN 风险应对)", () => {
     const task = buildVocabTask({
       dueWords: [],
       stageWords: STAGE_WORDS,
@@ -81,6 +81,43 @@ describe("每日任务编排", () => {
       retentionRate: 0.7,
     });
     expect(task.goal.newTarget).toBe(5);
+  });
+
+  it("留存率低迷:完成当日(减半后)目标后不再冒出新词(回归:曾对剩余量反复减半,进度永远追不满)", () => {
+    const task = buildVocabTask({
+      dueWords: [],
+      stageWords: STAGE_WORDS,
+      pointerIndex: 0,
+      dailyNewTarget: 10,
+      newDoneToday: 5, // 减半后目标 5 已学完
+      retentionRate: 0.7,
+    });
+    expect(task.items).toHaveLength(0);
+    expect(task.goal.newTarget).toBe(0);
+  });
+
+  it("留存率低迷:减半的是当日目标,剩余量 = 目标 - 已学(不再出现 ceil(剩余/2) 的滚动缩小)", () => {
+    const task = buildVocabTask({
+      dueWords: [],
+      stageWords: STAGE_WORDS,
+      pointerIndex: 0,
+      dailyNewTarget: 10,
+      newDoneToday: 4,
+      retentionRate: 0.7,
+    });
+    expect(task.goal.newTarget).toBe(1); // 目标 5 - 已学 4,而非 ceil((10-4)/2)=3
+  });
+
+  it("留存率 ≥ 0.8 时目标不减半", () => {
+    const task = buildVocabTask({
+      dueWords: [],
+      stageWords: STAGE_WORDS,
+      pointerIndex: 0,
+      dailyNewTarget: 10,
+      newDoneToday: 0,
+      retentionRate: 0.85,
+    });
+    expect(task.goal.newTarget).toBe(10);
   });
 
   it("继续学习:日目标已达成仍按日目标量从指针处发新词", () => {
